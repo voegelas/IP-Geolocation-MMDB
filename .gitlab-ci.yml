@@ -1,0 +1,10 @@
+image: voegelas/perl-devel-cover
+
+before_script:
+  - cpanm --quiet --notest --installdeps .
+
+test_job:
+  script:
+    - perl Makefile.PL
+    - make
+    - cover -test
