@@ -1,5 +1,5 @@
 {
-   "abstract" : "Map IP addresses to country codes",
+   "abstract" : "Read MaxMind DB files",
    "author" : [
       "Andreas V\u00f6gele <voegelas@cpan.org>"
    ],

@@ -45,7 +45,7 @@ __END__
 
 =head1 NAME
 
-IP::Geolocation::MMDB - Map IP addresses to country codes
+IP::Geolocation::MMDB - Read MaxMind DB files
 
 =head1 VERSION
 
@@ -59,8 +59,8 @@ version 0.002
 
 =head1 DESCRIPTION
 
-A Perl module that maps IP addresses to two-letter country codes such as "DE",
-"FR" and "US".
+A Perl module that reads MaxMind DB files and maps IP addresses to two-letter
+country codes such as "DE", "FR" and "US".
 
 =head1 SUBROUTINES/METHODS
 
