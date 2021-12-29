@@ -140,6 +140,8 @@ libmaxminddb uses 64-bit integers.
 
 The data type MMDB_DATA_TYPE_UINT128 is currently not mapped to a number.
 
+Some Windows versions do not support IPv6.
+
 =head1 LICENSE AND COPYRIGHT
 
 Copyright 2021 Andreas Vögele

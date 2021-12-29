@@ -30,8 +30,13 @@ ok !eval { $mmdb->record_for_address('-1') },
 
 ok !$mmdb->record_for_address('127.0.0.1'), 'no data for localhost';
 
-isa_ok $mmdb->record_for_address('176.9.54.163'),         'HASH';
-isa_ok $mmdb->record_for_address('2a01:4f8:150:74ab::2'), 'HASH';
+isa_ok $mmdb->record_for_address('176.9.54.163'), 'HASH';
+is $mmdb->getcc('176.9.54.163'), 'DE', 'IPv4 address is in Germany';
 
-is $mmdb->getcc('176.9.54.163'),         'DE', 'IPv4 address is in Germany';
-is $mmdb->getcc('2a01:4f8:150:74ab::2'), 'DE', 'IPv6 address is in Germany';
+SKIP:
+{
+  skip 'IPv6 tests on Windows', 2 if $^O eq 'MSWin32';
+
+  isa_ok $mmdb->record_for_address('2a01:4f8:150:74ab::2'), 'HASH';
+  is $mmdb->getcc('2a01:4f8:150:74ab::2'), 'DE', 'IPv6 address is in Germany';
+}
