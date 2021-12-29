@@ -2,9 +2,6 @@
 #include "perl.h"
 #include "XSUB.h"
 
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netdb.h>
 #include <maxminddb.h>
 
 typedef struct IP__Geolocation__MMDB {
@@ -174,8 +171,7 @@ record_for_address(self, ip_address)
   CODE:
     result = MMDB_lookup_string(self->mmdb, ip_address, &gai_error, &mmdb_error);
     if (0 != gai_error) {
-      error = gai_strerror(gai_error);
-      croak("Couldn't parse IP address \"%s\": %s", ip_address, error);
+      croak("Couldn't parse IP address \"%s\"", ip_address);
     }
     if (MMDB_SUCCESS != mmdb_error) {
       error = MMDB_strerror(mmdb_error);
