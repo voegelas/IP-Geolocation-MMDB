@@ -6,7 +6,7 @@ use 5.016;
 use warnings;
 use utf8;
 
-our $VERSION = 0.001;
+our $VERSION = 0.002;
 
 require XSLoader;
 XSLoader::load(__PACKAGE__, $VERSION);
@@ -49,7 +49,7 @@ IP::Geolocation::MMDB - Map IP addresses to country codes
 
 =head1 VERSION
 
-version 0.001
+version 0.002
 
 =head1 SYNOPSIS
 
