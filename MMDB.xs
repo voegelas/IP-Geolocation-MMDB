@@ -27,14 +27,14 @@ decode_entry_data_list(MMDB_entry_data_list_s *entry_data_list, SV **sv, int *mm
          size--) {
       if (MMDB_DATA_TYPE_UTF8_STRING != entry_data_list->entry_data.type) {
         *mmdb_error = MMDB_INVALID_DATA_ERROR;
-         return NULL;
+        return NULL;
       }
       const char *key = entry_data_list->entry_data.utf8_string;
       uint32_t key_size = entry_data_list->entry_data.data_size;
       entry_data_list = entry_data_list->next;
       if (NULL == entry_data_list) {
         *mmdb_error = MMDB_INVALID_DATA_ERROR;
-         return NULL;
+        return NULL;
       }
       SV *val = &PL_sv_undef;
       entry_data_list = decode_entry_data_list(entry_data_list, &val, mmdb_error);
