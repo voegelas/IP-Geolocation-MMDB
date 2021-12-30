@@ -6,7 +6,7 @@ use 5.016;
 use warnings;
 use utf8;
 
-our $VERSION = 0.002;
+our $VERSION = 0.003;
 
 require XSLoader;
 XSLoader::load(__PACKAGE__, $VERSION);
@@ -49,7 +49,7 @@ IP::Geolocation::MMDB - Read MaxMind DB files
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =head1 SYNOPSIS
 
