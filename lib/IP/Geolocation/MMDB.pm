@@ -55,6 +55,7 @@ version 0.002
 
   use IP::Geolocation::MMDB;
   my $db = IP::Geolocation::MMDB->new(file => 'GeoIP2-Country.mmdb');
+  my $lookup_result = $db->record_for_address('1.2.3.4');
   my $country_code = $db->getcc('2620:fe::9');
 
 =head1 DESCRIPTION
