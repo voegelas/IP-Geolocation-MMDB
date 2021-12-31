@@ -1,5 +1,9 @@
 Revision history for IP::Geolocation::MMDB
 
+0.004  2021-12-31 17:00:26 CET
+
+  - Store 64- and 128-bit integers in Math::BigInt objects
+
 0.003  2021-12-30 10:04:58 CET
 
   - Don't call gai_strerror(), which may return UTF-16 on Windows
