@@ -27,15 +27,23 @@ to_bigint(pTHX_ const char *bytes, size_t size)
     return newSVpvn(bytes, size);
   }
 
-#if MMDB_UINT128_IS_BYTE_ARRAY
-  Copy(bytes, buf, size, char);
-#else
   switch (BYTEORDER) {
   case 0x1234:
   case 0x12345678:
+#if MMDB_UINT128_IS_BYTE_ARRAY
+    if (16 == size) {
+      Copy(bytes, buf, size, char);
+    }
+    else {
+      for (size_t n = 0; n < size; ++n) {
+        buf[n] = bytes[size - n - 1];
+      }
+    }
+#else
     for (size_t n = 0; n < size; ++n) {
       buf[n] = bytes[size - n - 1];
     }
+#endif
     break;
   case 0x4321:
   case 0x87654321:
@@ -44,7 +52,6 @@ to_bigint(pTHX_ const char *bytes, size_t size)
   default:
     return newSVpvn(bytes, size);
   }
-#endif
 
   ENTER;
   SAVETMPS;

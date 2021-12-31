@@ -31,7 +31,7 @@ ok !eval { $mmdb->record_for_address('-1') },
 
 ok !$mmdb->record_for_address('127.0.0.1'), 'no data for localhost';
 
-my $uint64  = Math::BigInt->new('18446744073709551615');
+my $uint64  = Math::BigInt->new('4702394921427289928');
 my $uint128 = Math::BigInt->new('86743875649080753100636639643044826960');
 
 my $r = $mmdb->record_for_address('176.9.54.163');
@@ -42,9 +42,9 @@ ok $r->{x_boolean}, 'boolean is true';
 is $r->{x_bytes}, pack('W*', ord 'A' .. ord 'Z'), 'bytes match';
 cmp_ok $r->{x_double}, '>', 0.0, 'double is greater than zero';
 cmp_ok $r->{x_float},  '<', 0.0, 'float is less than zero';
-is $r->{x_int32},       -2147483648,    'int32 matches';
-is $r->{x_uint16},      65535,          'uint16 matches';
-is $r->{x_uint32},      4294967295,     'uint32 matches';
+is $r->{x_int32},       -12500413,      'int32 matches';
+is $r->{x_uint16},      16706,          'uint16 matches';
+is $r->{x_uint32},      1094861636,     'uint32 matches';
 is $r->{x_uint64},      $uint64,        'uint64 matches';
 is $r->{x_uint128},     $uint128,       'uint128 matches';
 is $r->{x_utf8_string}, 'Фалькенштайн', 'utf8_string matches';
