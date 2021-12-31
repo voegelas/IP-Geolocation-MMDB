@@ -1,3 +1,4 @@
+#define PERL_NO_GET_CONTEXT
 #include "EXTERN.h"
 #include "perl.h"
 #include "XSUB.h"
@@ -13,8 +14,65 @@ typedef struct IP__Geolocation__MMDB {
   Zero(var, sizeof(*var) + sizeof(type), char); \
   var->mmdb = (type *)((char *)var + sizeof(*var));
 
+static SV *
+to_bigint(pTHX_ const char *bytes, size_t size)
+{
+  dSP;
+  int count;
+  char buf[16];
+  SV *err_tmp;
+  SV *retval;
+
+  if (size > sizeof(buf)) {
+    return newSVpvn(bytes, size);
+  }
+
+  switch (BYTEORDER) {
+  case 0x1234:
+  case 0x12345678:
+    for (size_t n = 0; n < size; ++n) {
+      buf[n] = bytes[size - n - 1];
+    }
+    break;
+  case 0x4321:
+  case 0x87654321:
+    for (size_t n = 0; n < size; ++n) {
+      buf[n] = bytes[n];
+    }
+    break;
+  default:
+    return newSVpvn(bytes, size);
+  }
+
+  ENTER;
+  SAVETMPS;
+  PUSHMARK(SP);
+  mXPUSHp(buf, size);
+  PUTBACK;
+  count = call_pv("IP::Geolocation::MMDB::_to_bigint", G_SCALAR | G_EVAL);
+  SPAGAIN;
+  err_tmp = ERRSV;
+  if (SvTRUE(err_tmp)) {
+    (void) POPs;
+    retval = newSVpvn(bytes, size);
+  }
+  else {
+    if (1 == count) {
+      retval = newSVsv(POPs);
+    }
+    else {
+      retval = newSVpvn(bytes, size);
+    }
+  }
+  PUTBACK;
+  FREETMPS;
+  LEAVE;
+
+  return retval;
+}
+
 static MMDB_entry_data_list_s *
-decode_entry_data_list(MMDB_entry_data_list_s *entry_data_list, SV **sv, int *mmdb_error)
+decode_entry_data_list(pTHX_ MMDB_entry_data_list_s *entry_data_list, SV **sv, int *mmdb_error)
 {
   MMDB_entry_data_s *entry_data = &entry_data_list->entry_data;
   switch (entry_data->type) {
@@ -37,7 +95,7 @@ decode_entry_data_list(MMDB_entry_data_list_s *entry_data_list, SV **sv, int *mm
         return NULL;
       }
       SV *val = &PL_sv_undef;
-      entry_data_list = decode_entry_data_list(entry_data_list, &val, mmdb_error);
+      entry_data_list = decode_entry_data_list(aTHX_ entry_data_list, &val, mmdb_error);
       if (MMDB_SUCCESS != *mmdb_error) {
         return NULL;
       }
@@ -55,7 +113,7 @@ decode_entry_data_list(MMDB_entry_data_list_s *entry_data_list, SV **sv, int *mm
          size > 0 && NULL != entry_data_list;
          size--) {
       SV *val = &PL_sv_undef;
-      entry_data_list = decode_entry_data_list(entry_data_list, &val, mmdb_error);
+      entry_data_list = decode_entry_data_list(aTHX_ entry_data_list, &val, mmdb_error);
       if (MMDB_SUCCESS != *mmdb_error) {
         return NULL;
       }
@@ -101,13 +159,16 @@ decode_entry_data_list(MMDB_entry_data_list_s *entry_data_list, SV **sv, int *mm
     break;
 
   case MMDB_DATA_TYPE_UINT64:
+#if UVSIZE < 8
+    *sv = to_bigint(aTHX_ (const char *) &entry_data->uint64, sizeof(entry_data->uint64));
+#else
     *sv = newSVuv(entry_data->uint64);
+#endif
     entry_data_list = entry_data_list->next;
     break;
 
   case MMDB_DATA_TYPE_UINT128:
-    /* XXX Handle 128-bit integers */
-    *sv = newSVpvn((const char *) &entry_data->uint128, sizeof(entry_data->uint128));
+    *sv = to_bigint(aTHX_ (const char *) &entry_data->uint128, sizeof(entry_data->uint128));
     entry_data_list = entry_data_list->next;
     break;
 
@@ -182,7 +243,7 @@ record_for_address(self, ip_address)
       entry_data_list = NULL;
       mmdb_error = MMDB_get_entry_data_list(&result.entry, &entry_data_list);
       if (MMDB_SUCCESS == mmdb_error) {
-        (void) decode_entry_data_list(entry_data_list, &RETVAL, &mmdb_error);
+        (void) decode_entry_data_list(aTHX_ entry_data_list, &RETVAL, &mmdb_error);
       }
       MMDB_free_entry_data_list(entry_data_list);
       if (MMDB_SUCCESS != mmdb_error) {

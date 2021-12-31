@@ -8,6 +8,8 @@ use utf8;
 
 our $VERSION = 0.003;
 
+use Math::BigInt 1.999807;
+
 require XSLoader;
 XSLoader::load(__PACKAGE__, $VERSION);
 
@@ -36,6 +38,12 @@ sub getcc {
   }
 
   return $country_code;
+}
+
+## no critic (Subroutines::ProhibitUnusedPrivateSubroutines)
+
+sub _to_bigint {
+  return Math::BigInt->from_bytes(shift);
 }
 
 1;
@@ -121,8 +129,9 @@ None.
 
 =head1 DEPENDENCIES
 
-Requires Alien::libmaxminddb from CPAN.  On Windows, Alien::MSYS needs to be
-installed.
+Requires L<Alien::libmaxminddb> from CPAN.  On Windows, L<Alien::MSYS> needs
+to be installed.  Requires L<Math::BigInt> version 1.999807, which is
+distributed with Perl 5.28 and newer.
 
 Requires an IP to country database in the MaxMind DB file format from
 L<DP-IP.com|https://db-ip.com/> or L<MaxMind|https://www.maxmind.com/>.
@@ -137,9 +146,10 @@ Andreas Vögele E<lt>voegelas@cpan.orgE<gt>
 
 =head1 BUGS AND LIMITATIONS
 
-libmaxminddb uses 64-bit integers.
+If your Perl interpreter does not support 64-bit integers,
+MMDB_DATA_TYPE_UINT64 values are put into Math::BigInt objects;
 
-The data type MMDB_DATA_TYPE_UINT128 is currently not mapped to a number.
+MMDB_DATA_TYPE_UINT128 values are put into Math::BigInt objects;
 
 Some Windows versions do not support IPv6.
 
