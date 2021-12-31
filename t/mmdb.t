@@ -32,9 +32,9 @@ ok !eval { $mmdb->record_for_address('-1') },
 ok !$mmdb->record_for_address('127.0.0.1'), 'no data for localhost';
 
 my $uint64  = Math::BigInt->new('18446744073709551615');
-my $uint128 = Math::BigInt->new('86743875649080753100636639643044826960'),
+my $uint128 = Math::BigInt->new('86743875649080753100636639643044826960');
 
-  my $r = $mmdb->record_for_address('176.9.54.163');
+my $r = $mmdb->record_for_address('176.9.54.163');
 isa_ok $r, 'HASH';
 is_deeply $r->{x_array}, [-1, 0, 1], 'array matches';
 is_deeply $r->{x_map}, {red => 160, green => 32, blue => 240}, 'map matches';
