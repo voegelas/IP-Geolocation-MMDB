@@ -33,6 +33,7 @@ to_bigint(IP__Geolocation__MMDB self, const char *bytes, size_t size)
   char buf[16];
   SV *err_tmp;
   SV *retval;
+  size_t n;
 
   if (size > sizeof(buf)) {
     return newSVpvn(bytes, size);
@@ -46,12 +47,12 @@ to_bigint(IP__Geolocation__MMDB self, const char *bytes, size_t size)
       Copy(bytes, buf, size, char);
     }
     else {
-      for (size_t n = 0; n < size; ++n) {
+      for (n = 0; n < size; ++n) {
         buf[n] = bytes[size - n - 1];
       }
     }
 #else
-    for (size_t n = 0; n < size; ++n) {
+    for (n = 0; n < size; ++n) {
       buf[n] = bytes[size - n - 1];
     }
 #endif
