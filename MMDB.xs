@@ -7,6 +7,7 @@
 
 typedef struct IP__Geolocation__MMDB {
   MMDB_s *mmdb;
+  SV *selfrv;
 } *IP__Geolocation__MMDB;
 
 #define NEW_IP__Geolocation__MMDB(var, type) \
@@ -15,7 +16,7 @@ typedef struct IP__Geolocation__MMDB {
   var->mmdb = (type *)((char *)var + sizeof(*var));
 
 static SV *
-to_bigint(pTHX_ const char *bytes, size_t size)
+to_bigint(pTHX_ IP__Geolocation__MMDB self, const char *bytes, size_t size)
 {
   dSP;
   int count;
@@ -56,9 +57,11 @@ to_bigint(pTHX_ const char *bytes, size_t size)
   ENTER;
   SAVETMPS;
   PUSHMARK(SP);
-  mXPUSHp(buf, size);
+  EXTEND(SP, 2);
+  mPUSHs(newRV_inc(self->selfrv));
+  mPUSHp(buf, size);
   PUTBACK;
-  count = call_pv("IP::Geolocation::MMDB::_to_bigint", G_SCALAR | G_EVAL);
+  count = call_method("_to_bigint", G_SCALAR | G_EVAL);
   SPAGAIN;
   err_tmp = ERRSV;
   if (SvTRUE(err_tmp)) {
@@ -81,7 +84,7 @@ to_bigint(pTHX_ const char *bytes, size_t size)
 }
 
 static MMDB_entry_data_list_s *
-decode_entry_data_list(pTHX_ MMDB_entry_data_list_s *entry_data_list, SV **sv, int *mmdb_error)
+decode_entry_data_list(pTHX_ IP__Geolocation__MMDB self, MMDB_entry_data_list_s *entry_data_list, SV **sv, int *mmdb_error)
 {
   MMDB_entry_data_s *entry_data = &entry_data_list->entry_data;
   switch (entry_data->type) {
@@ -104,7 +107,7 @@ decode_entry_data_list(pTHX_ MMDB_entry_data_list_s *entry_data_list, SV **sv, i
         return NULL;
       }
       SV *val = &PL_sv_undef;
-      entry_data_list = decode_entry_data_list(aTHX_ entry_data_list, &val, mmdb_error);
+      entry_data_list = decode_entry_data_list(aTHX_ self, entry_data_list, &val, mmdb_error);
       if (MMDB_SUCCESS != *mmdb_error) {
         return NULL;
       }
@@ -122,7 +125,7 @@ decode_entry_data_list(pTHX_ MMDB_entry_data_list_s *entry_data_list, SV **sv, i
          size > 0 && NULL != entry_data_list;
          size--) {
       SV *val = &PL_sv_undef;
-      entry_data_list = decode_entry_data_list(aTHX_ entry_data_list, &val, mmdb_error);
+      entry_data_list = decode_entry_data_list(aTHX_ self, entry_data_list, &val, mmdb_error);
       if (MMDB_SUCCESS != *mmdb_error) {
         return NULL;
       }
@@ -169,7 +172,7 @@ decode_entry_data_list(pTHX_ MMDB_entry_data_list_s *entry_data_list, SV **sv, i
 
   case MMDB_DATA_TYPE_UINT64:
 #if UVSIZE < 8
-    *sv = to_bigint(aTHX_ (const char *) &entry_data->uint64, sizeof(entry_data->uint64));
+    *sv = to_bigint(aTHX_ self, (const char *) &entry_data->uint64, sizeof(entry_data->uint64));
 #else
     *sv = newSVuv(entry_data->uint64);
 #endif
@@ -177,7 +180,7 @@ decode_entry_data_list(pTHX_ MMDB_entry_data_list_s *entry_data_list, SV **sv, i
     break;
 
   case MMDB_DATA_TYPE_UINT128:
-    *sv = to_bigint(aTHX_ (const char *) &entry_data->uint128, sizeof(entry_data->uint128));
+    *sv = to_bigint(aTHX_ self, (const char *) &entry_data->uint128, sizeof(entry_data->uint128));
     entry_data_list = entry_data_list->next;
     break;
 
@@ -219,6 +222,7 @@ _new(class, file, flags)
 
     RETVAL = newSV(0);
     sv_setref_pv(RETVAL, "IP::Geolocation::MMDB", self);
+    self->selfrv = SvRV(RETVAL); /* no inc */
   OUTPUT:
     RETVAL
 
@@ -252,7 +256,7 @@ record_for_address(self, ip_address)
       entry_data_list = NULL;
       mmdb_error = MMDB_get_entry_data_list(&result.entry, &entry_data_list);
       if (MMDB_SUCCESS == mmdb_error) {
-        (void) decode_entry_data_list(aTHX_ entry_data_list, &RETVAL, &mmdb_error);
+        (void) decode_entry_data_list(aTHX_ self, entry_data_list, &RETVAL, &mmdb_error);
       }
       MMDB_free_entry_data_list(entry_data_list);
       if (MMDB_SUCCESS != mmdb_error) {

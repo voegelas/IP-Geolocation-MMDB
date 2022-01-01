@@ -43,7 +43,9 @@ sub getcc {
 ## no critic (Subroutines::ProhibitUnusedPrivateSubroutines)
 
 sub _to_bigint {
-  return Math::BigInt->from_bytes(shift);
+  my ($self, $bytes) = @_;
+
+  return Math::BigInt->from_bytes($bytes);
 }
 
 1;
