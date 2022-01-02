@@ -6,7 +6,7 @@ use 5.016;
 use warnings;
 use utf8;
 
-our $VERSION = 0.005;
+our $VERSION = 0.006;
 
 use Math::BigInt 1.999807;
 
@@ -59,7 +59,7 @@ IP::Geolocation::MMDB - Read MaxMind DB files
 
 =head1 VERSION
 
-version 0.005
+version 0.006
 
 =head1 SYNOPSIS
 
@@ -157,7 +157,7 @@ Some Windows versions do not support IPv6.
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright 2021 Andreas Vögele
+Copyright 2022 Andreas Vögele
 
 This module is free software; you can redistribute it and/or modify it under
 the same terms as Perl itself.

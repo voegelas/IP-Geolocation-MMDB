@@ -1,5 +1,11 @@
 Revision history for IP::Geolocation::MMDB
 
+0.006  2022-01-02 04:14:40 CET
+
+  - Remove loop initial declarations from MMDB.xs
+  - _to_bigint is now a virtual method
+  - Improved tests
+
 0.005  2021-12-31 21:16:14 CET
 
   - Handle MMDB_UINT128_IS_BYTE_ARRAY
