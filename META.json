@@ -53,6 +53,10 @@
       "IP::Geolocation::MMDB" : {
          "file" : "lib/IP/Geolocation/MMDB.pm",
          "version" : "0.006"
+      },
+      "IP::Geolocation::MMDB::Metadata" : {
+         "file" : "lib/IP/Geolocation/MMDB/Metadata.pm",
+         "version" : "0.006"
       }
    },
    "release_status" : "stable",

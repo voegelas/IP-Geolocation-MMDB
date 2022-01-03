@@ -281,6 +281,28 @@ record_for_address(self, ip_address)
   OUTPUT:
     RETVAL
 
+SV *
+_metadata(self)
+  IP::Geolocation::MMDB self
+  INIT:
+    int mmdb_error;
+    const char *error;
+    MMDB_entry_data_list_s *entry_data_list;
+  CODE:
+    RETVAL = &PL_sv_undef;
+    entry_data_list = NULL;
+    mmdb_error = MMDB_get_metadata_as_entry_data_list(self->mmdb, &entry_data_list);
+    if (MMDB_SUCCESS == mmdb_error) {
+      (void) decode_entry_data_list(self, entry_data_list, &RETVAL, &mmdb_error);
+    }
+    MMDB_free_entry_data_list(entry_data_list);
+    if (MMDB_SUCCESS != mmdb_error) {
+      error = MMDB_strerror(mmdb_error);
+      croak("Couldn't read metadata: %s", error);
+    }
+  OUTPUT:
+    RETVAL
+
 const char *
 version(class)
   CODE:
