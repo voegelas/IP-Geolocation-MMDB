@@ -6,7 +6,7 @@ use 5.016;
 use warnings;
 use utf8;
 
-our $VERSION = 0.006;
+our $VERSION = 0.007;
 
 use IP::Geolocation::MMDB::Metadata;
 use Math::BigInt 1.999807;
@@ -66,7 +66,7 @@ IP::Geolocation::MMDB - Read MaxMind DB files
 
 =head1 VERSION
 
-version 0.006
+version 0.007
 
 =head1 SYNOPSIS
 

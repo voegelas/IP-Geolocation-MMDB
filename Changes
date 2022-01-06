@@ -1,5 +1,9 @@
 Revision history for IP::Geolocation::MMDB
 
+0.007  2022-01-03 13:19:29 CET
+
+  - Implement IP::Geolocation::MMDB::Metadata
+
 0.006  2022-01-02 04:14:40 CET
 
   - Remove loop initial declarations from MMDB.xs
