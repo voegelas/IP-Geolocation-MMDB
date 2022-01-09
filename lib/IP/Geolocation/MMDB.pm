@@ -71,7 +71,7 @@ version 0.007
 =head1 SYNOPSIS
 
   use IP::Geolocation::MMDB;
-  my $db = IP::Geolocation::MMDB->new(file => 'GeoIP2-Country.mmdb');
+  my $db = IP::Geolocation::MMDB->new(file => 'Country.mmdb');
   my $metadata = $db->metadata;
   my $lookup_result = $db->record_for_address('1.2.3.4');
   my $country_code = $db->getcc('2620:fe::9');
@@ -85,7 +85,7 @@ country codes such as "DE", "FR" and "US".
 
 =head2 new
 
-  my $db = IP::Geolocation::MMDB->new(file => 'GeoIP2-Country.mmdb');
+  my $db = IP::Geolocation::MMDB->new(file => 'Country.mmdb');
 
 Returns a new database object.  Dies if the specified file cannot be read.
 

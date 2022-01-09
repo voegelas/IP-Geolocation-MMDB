@@ -18,7 +18,7 @@ ok !eval { IP::Geolocation::MMDB->new },
 ok !eval { IP::Geolocation::MMDB->new(file => 'nonexistent') },
   'constructor with non-existing file dies';
 
-my $file = catfile(qw(t data Test-GeoLite2-City.mmdb));
+my $file = catfile(qw(t data Test-City.mmdb));
 
 my $mmdb = new_ok 'IP::Geolocation::MMDB' => [file => $file];
 
