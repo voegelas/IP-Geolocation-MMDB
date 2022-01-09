@@ -30,9 +30,9 @@ sub getcc {
 
   my $country_code;
 
-  my $lookup_result = $self->record_for_address($ip_address);
-  if (exists $lookup_result->{country}) {
-    my $country = $lookup_result->{country};
+  my $data = $self->record_for_address($ip_address);
+  if (exists $data->{country}) {
+    my $country = $data->{country};
     if (exists $country->{iso_code}) {
       $country_code = $country->{iso_code};
     }
@@ -73,7 +73,7 @@ version 0.007
   use IP::Geolocation::MMDB;
   my $db = IP::Geolocation::MMDB->new(file => 'Country.mmdb');
   my $metadata = $db->metadata;
-  my $lookup_result = $db->record_for_address('1.2.3.4');
+  my $data = $db->record_for_address('1.2.3.4');
   my $country_code = $db->getcc('2620:fe::9');
 
 =head1 DESCRIPTION
@@ -98,7 +98,7 @@ code or the undefined value.  Dies if the address is not a valid IP address.
 
 =head2 record_for_address
 
-  my $lookup_result = $db->record_for_address($ip_address);
+  my $data = $db->record_for_address($ip_address);
 
 Takes an IPv4 or IPv6 address as a string and returns the data associated with
 the IP address or the undefined value.  Dies if the address is not a valid IP
@@ -106,6 +106,27 @@ address.
 
 The returned data is usually a hash reference but could also be a an array
 reference or a scalar for custom databases.
+
+=head2 iterate_search_tree
+
+  sub data_callback {
+    my ($numeric_ip, $prefix_length, $data) = @_;
+  }
+
+  sub node_callback {
+    my ($node_number, $left_node_number, $right_node_number) = @_;
+  }
+
+  $db->iterate_search_tree(\&data_callback, \&node_callback);
+
+Iterates over the entire search tree.  Calls the provided callbacks for each
+data record and node in the tree.  Both callbacks are optional.
+
+The data callback is called with a numeric IP address as a L<Math::BigInt>
+object, a network prefix length and the data associated with the network.
+
+The node callback is called with a node number and the children's node
+numbers.
 
 =head2 metadata
 
