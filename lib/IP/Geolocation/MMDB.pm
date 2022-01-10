@@ -134,9 +134,9 @@ numbers.
 
 Returns an L<IP::Geolocation::MMDB::Metadata> object for the database.
 
-=head2 version
+=head2 libmaxminddb_version
 
-  my $version = IP::Geolocation::MMDB->version;
+  my $version = IP::Geolocation::MMDB::libmaxminddb_version;
 
 Returns the libmaxminddb version.
 
@@ -144,26 +144,34 @@ Returns the libmaxminddb version.
 
 =over
 
-=item B<< Couldn't open database file >>
+=item B<< Error opening database file >>
 
 The database file could not be read.
 
-=item B<< Couldn't parse IP address >>
+=item B<< The IP address you provided is not a valid IPv4 or IPv6 address >>
 
-A string did not contain a valid IP address.
+A parameter did not contain a valid IP address.
 
-=item B<< Couldn't look up IP address >>
+=item B<< Error looking up IP address >>
 
 A database error occurred while looking up an IP address.
 
-=item B<< Couldn't read data for IP address >>
+=item B<< Entry data error looking up >>
 
 A database error occurred while reading the data associated with an IP
 address.
 
-=item B<< Couldn't read metadata >>
+=item B<< Error getting metadata >>
 
 An error occurred while reading the database's metadata.
+
+=item B<< Invalid record when reading node >>
+
+Either an invalid node was looked up or the database is corrupt.
+
+=item B<< Unknown record type >>
+
+An unknown record type was found in the database.
 
 =back
 

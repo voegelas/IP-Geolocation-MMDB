@@ -6,7 +6,7 @@ use 5.016;
 use warnings;
 use utf8;
 
-use Test::More tests => 40;
+use Test::More tests => 42;
 
 use File::Spec::Functions qw(catfile);
 use IP::Geolocation::MMDB;
@@ -22,9 +22,11 @@ my $file = catfile(qw(t data Test-City.mmdb));
 
 my $mmdb = new_ok 'IP::Geolocation::MMDB' => [file => $file];
 
-can_ok $mmdb, qw(getcc record_for_address version);
+can_ok $mmdb, qw(getcc record_for_address iterate_search_tree metadata);
 
-isnt $mmdb->version, q{}, 'library version is not empty';
+my $version = IP::Geolocation::MMDB::libmaxminddb_version;
+isnt $version, q{}, 'library version is not empty';
+diag 'libmaxminddb version is ' . $version;
 
 ok !eval { $mmdb->record_for_address('-1') },
   'invalid ip address throws exception';
@@ -86,20 +88,22 @@ sub data_callback {
   return;
 }
 
-my $node_count = 0;
+my %children_for;
 
 sub node_callback {
   my ($node_number, $left_node_number, $right_node_number) = @_;
 
-  ++$node_count;
+  $children_for{$node_number} = [$left_node_number, $right_node_number];
 
   return;
 }
 
 $mmdb->iterate_search_tree(\&data_callback, \&node_callback);
 
-cmp_ok scalar keys %data_for, '>', 0, 'data_callback was called';
-cmp_ok $node_count,           '>', 0, 'node_callback was called';
+cmp_ok scalar keys %data_for,     '>', 0, 'data_callback was called';
+cmp_ok scalar keys %children_for, '>', 0, 'node_callback was called';
+ok exists $children_for{0}, 'node 0 exists';
+isnt $children_for{0}->[0], $children_for{0}->[1], 'children differ';
 
 my $ipv4_data = $data_for{'ffffb0090000/112'};
 my $ipv6_data = $data_for{'2a0104f8000000000000000000000000/32'};

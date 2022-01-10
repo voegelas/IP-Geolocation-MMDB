@@ -275,7 +275,7 @@ call_node_callback(iterate_data *data, uint32_t node_num,
 
   dSP;
   SV *left_record = createSVu64(self, node->left_record);
-  SV *right_record = createSVu64(self, node->left_record);
+  SV *right_record = createSVu64(self, node->right_record);
 
   ENTER;
   SAVETMPS;
@@ -358,7 +358,7 @@ iterate_record_entry(iterate_data *data, numeric_ip ipnum, int depth,
       call_data_callback(data, ipnum, depth, record_entry);
       break;
     default:
-      croak("Unknown record type %u", (unsigned int) record_type);
+      croak("Unknown record type: %u", (unsigned int) record_type);
       break;
   }
 }
@@ -404,7 +404,7 @@ _new(class, file, flags)
     if (MMDB_SUCCESS != mmdb_error) {
       Safefree(self);
       error = MMDB_strerror(mmdb_error);
-      croak("Couldn't open database file \"%s\": %s", file, error);
+      croak("Error opening database file \"%s\": %s", file, error);
     }
 
     storeTHX(self->perl);
@@ -423,23 +423,31 @@ DESTROY(self)
     Safefree(self);
 
 SV *
-record_for_address(self, ip_address)
+record_for_address(self, ...)
   IP::Geolocation::MMDB self
-  const char *ip_address
   INIT:
+    const char *ip_address;
     int gai_error, mmdb_error;
     const char *error;
     MMDB_lookup_result_s result;
     MMDB_entry_data_list_s *entry_data_list;
   CODE:
+    ip_address = NULL;
+    if (items > 1) {
+      ip_address = SvPVbyte_nolen(ST(1));
+    }
+    if (NULL == ip_address|| '\0' == *ip_address) {
+      croak("%s", "You must provide an IP address to look up");
+    }
     result =
       MMDB_lookup_string(self->mmdb, ip_address, &gai_error, &mmdb_error);
     if (0 != gai_error) {
-      croak("Couldn't parse IP address \"%s\"", ip_address);
+      croak("The IP address you provided (%s) is not a valid IPv4 or IPv6 address",
+            ip_address);
     }
     if (MMDB_SUCCESS != mmdb_error) {
       error = MMDB_strerror(mmdb_error);
-      croak("Couldn't look up IP address \"%s\": %s", ip_address, error);
+      croak("Error looking up IP address \"%s\": %s", ip_address, error);
     }
     RETVAL = &PL_sv_undef;
     if (result.found_entry) {
@@ -452,7 +460,7 @@ record_for_address(self, ip_address)
       MMDB_free_entry_data_list(entry_data_list);
       if (MMDB_SUCCESS != mmdb_error) {
         error = MMDB_strerror(mmdb_error);
-        croak("Couldn't read data for IP address \"%s\": %s",
+        croak("Entry data error looking up \"%s\": %s",
               ip_address, error);
       }
     }
@@ -460,14 +468,22 @@ record_for_address(self, ip_address)
     RETVAL
 
 void
-iterate_search_tree(self, data_callback, node_callback)
+iterate_search_tree(self, ...)
   IP::Geolocation::MMDB self
-  SV *data_callback
-  SV *node_callback
   INIT:
+    SV *data_callback;
+    SV *node_callback;
     iterate_data data;
     numeric_ip ipnum;
   CODE:
+    data_callback = &PL_sv_undef;
+    node_callback = &PL_sv_undef;
+    if (items > 1) {
+      data_callback = ST(1);
+      if (items > 2) {
+        node_callback = ST(2);
+      }
+    }
     INIT_iterate_data(&data, self, data_callback, node_callback);
     INIT_numeric_ip(ipnum);
     iterate_search_nodes(&data, 0, ipnum, 1);
@@ -491,13 +507,13 @@ _metadata(self)
     MMDB_free_entry_data_list(entry_data_list);
     if (MMDB_SUCCESS != mmdb_error) {
       error = MMDB_strerror(mmdb_error);
-      croak("Couldn't read metadata: %s", error);
+      croak("Error getting metadata: %s", error);
     }
   OUTPUT:
     RETVAL
 
 const char *
-version(class)
+libmaxminddb_version()
   CODE:
     RETVAL = MMDB_lib_version();
   OUTPUT:
