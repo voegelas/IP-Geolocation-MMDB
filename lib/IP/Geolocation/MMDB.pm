@@ -9,7 +9,7 @@ use utf8;
 our $VERSION = 0.008;
 
 use IP::Geolocation::MMDB::Metadata;
-use Math::BigInt 1.999807;
+use Math::BigInt 1.999811;
 
 require XSLoader;
 XSLoader::load(__PACKAGE__, $VERSION);

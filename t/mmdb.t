@@ -10,7 +10,7 @@ use Test::More tests => 42;
 
 use File::Spec::Functions qw(catfile);
 use IP::Geolocation::MMDB;
-use Math::BigInt 1.999807;
+use Math::BigInt 1.999811;
 
 ok !eval { IP::Geolocation::MMDB->new },
   'constructor without "file" parameter dies';

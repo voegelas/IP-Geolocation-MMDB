@@ -35,7 +35,7 @@
       },
       "runtime" : {
          "requires" : {
-            "Math::BigInt" : "1.999807",
+            "Math::BigInt" : "1.999811",
             "XSLoader" : "0",
             "perl" : "5.016",
             "utf8" : "0",
