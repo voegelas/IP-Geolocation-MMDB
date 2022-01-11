@@ -182,7 +182,7 @@ None.
 =head1 DEPENDENCIES
 
 Requires L<Alien::libmaxminddb> from CPAN.  On Windows, L<Alien::MSYS> needs
-to be installed.  Requires L<Math::BigInt> version 1.999807, which is
+to be installed.  Requires L<Math::BigInt> version 1.999811, which is
 distributed with Perl 5.28 and newer.
 
 Requires an IP to country database in the MaxMind DB file format from
