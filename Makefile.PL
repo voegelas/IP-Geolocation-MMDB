@@ -24,7 +24,7 @@ my %WriteMakefileArgs = (
   "MIN_PERL_VERSION" => "5.016",
   "NAME" => "IP::Geolocation::MMDB",
   "PREREQ_PM" => {
-    "Math::BigInt" => "1.999811",
+    "Math::BigInt" => "1.999806",
     "XSLoader" => 0,
     "utf8" => 0,
     "warnings" => 0
@@ -47,7 +47,7 @@ my %WriteMakefileArgs = (
 
 my %FallbackPrereqs = (
   "File::Spec::Functions" => 0,
-  "Math::BigInt" => "1.999811",
+  "Math::BigInt" => "1.999806",
   "Test::More" => 0,
   "XSLoader" => 0,
   "utf8" => 0,

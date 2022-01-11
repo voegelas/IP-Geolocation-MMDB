@@ -10,7 +10,7 @@ use Test::More tests => 42;
 
 use File::Spec::Functions qw(catfile);
 use IP::Geolocation::MMDB;
-use Math::BigInt 1.999811;
+use Math::BigInt 1.999806;
 
 ok !eval { IP::Geolocation::MMDB->new },
   'constructor without "file" parameter dies';
@@ -82,7 +82,7 @@ my %data_for;
 sub data_callback {
   my ($numeric_ip, $prefix_length, $data) = @_;
 
-  my $address = $numeric_ip->to_hex . '/' . $prefix_length;
+  my $address = $numeric_ip->as_hex . '/' . $prefix_length;
   $data_for{$address} = $data;
 
   return;
@@ -105,8 +105,8 @@ cmp_ok scalar keys %children_for, '>', 0, 'node_callback was called';
 ok exists $children_for{0}, 'node 0 exists';
 isnt $children_for{0}->[0], $children_for{0}->[1], 'children differ';
 
-my $ipv4_data = $data_for{'ffffb0090000/112'};
-my $ipv6_data = $data_for{'2a0104f8000000000000000000000000/32'};
+my $ipv4_data = $data_for{'0xffffb0090000/112'};
+my $ipv6_data = $data_for{'0x2a0104f8000000000000000000000000/32'};
 ok defined $ipv4_data,           'IPv4 data exists';
 ok defined $ipv6_data,           'IPv6 data exists';
 ok exists $ipv4_data->{city},    'city key exists';

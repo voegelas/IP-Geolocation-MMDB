@@ -9,7 +9,7 @@ use utf8;
 our $VERSION = 0.009;
 
 use IP::Geolocation::MMDB::Metadata;
-use Math::BigInt 1.999811;
+use Math::BigInt 1.999806;
 
 require XSLoader;
 XSLoader::load(__PACKAGE__, $VERSION);
@@ -182,8 +182,8 @@ None.
 =head1 DEPENDENCIES
 
 Requires L<Alien::libmaxminddb> from CPAN.  On Windows, L<Alien::MSYS> needs
-to be installed.  Requires L<Math::BigInt> version 1.999811, which is
-distributed with Perl 5.28 and newer.
+to be installed.  Requires L<Math::BigInt> version 1.999806, which is
+distributed with Perl 5.26 and newer.
 
 Requires an IP to country database in the MaxMind DB file format from
 L<DP-IP.com|https://db-ip.com/> or L<MaxMind|https://www.maxmind.com/>.
