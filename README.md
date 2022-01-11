@@ -15,15 +15,12 @@ Requires Alien::libmaxminddb from CPAN.  On Windows, Alien::MSYS needs to be
 installed.  Requires Math::BigInt version 1.999806, which is distributed with
 Perl 5.26 and newer.
 
-Requires an IP to country database in the MaxMind DB file format from
+Requires an IP to country or city database in the MaxMind DB file format from
 [DP-IP.com](https://db-ip.com/) or [MaxMind](https://www.maxmind.com/).
 
 ## INSTALLATION
 
-The [Open Build Service](https://build.opensuse.org/package/show/home:voegelas/perl-IP-Geolocation-MMDB)
-provides binary and source packages.
-
-Run the following commands to install the software manually:
+Run the following commands to install the software:
 
     perl Makefile.PL
     make

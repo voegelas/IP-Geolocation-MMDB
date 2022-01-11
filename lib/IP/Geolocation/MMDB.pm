@@ -144,6 +144,10 @@ Returns the libmaxminddb version.
 
 =over
 
+=item B<< The "file" parameter is mandatory >>
+
+The constructor was called without a database filename.
+
 =item B<< Error opening database file >>
 
 The database file could not be read.
@@ -185,7 +189,7 @@ Requires L<Alien::libmaxminddb> from CPAN.  On Windows, L<Alien::MSYS> needs
 to be installed.  Requires L<Math::BigInt> version 1.999806, which is
 distributed with Perl 5.26 and newer.
 
-Requires an IP to country database in the MaxMind DB file format from
+Requires an IP to country or city database in the MaxMind DB file format from
 L<DP-IP.com|https://db-ip.com/> or L<MaxMind|https://www.maxmind.com/>.
 
 =head1 INCOMPATIBILITIES
