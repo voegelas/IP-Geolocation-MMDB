@@ -1,5 +1,9 @@
 Revision history for IP::Geolocation::MMDB
 
+0.009  2022-01-11 08:08:25 CET
+
+  - Depend on Math::BigInt 1.999811
+
 0.008  2022-01-10 15:07:38 CET
 
   - Implement iterate_search_tree
