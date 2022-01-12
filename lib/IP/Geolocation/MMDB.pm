@@ -78,8 +78,8 @@ version 1.000
 
 =head1 DESCRIPTION
 
-A Perl module that reads MaxMind DB files and maps IP addresses to two-letter
-country codes such as "DE", "FR" and "US".
+A Perl module that reads MaxMind DB files and maps IP addresses to location
+information such as country and city names.
 
 =head1 SUBROUTINES/METHODS
 
@@ -189,8 +189,8 @@ Requires L<Alien::libmaxminddb> from CPAN.  On Windows, L<Alien::MSYS> needs
 to be installed.  Requires L<Math::BigInt> version 1.999806, which is
 distributed with Perl 5.26 and newer.
 
-Requires an IP to country or city database in the MaxMind DB file format from
-L<DP-IP.com|https://db-ip.com/> or L<MaxMind|https://www.maxmind.com/>.
+Requires an IP to country, city or ASN database in the MaxMind DB file format
+from L<MaxMind|https://www.maxmind.com/> or L<DP-IP.com|https://db-ip.com/>.
 
 =head1 INCOMPATIBILITIES
 

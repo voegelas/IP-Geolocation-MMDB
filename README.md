@@ -1,7 +1,7 @@
 # IP::Geolocation::MMDB
 
-A Perl module that reads MaxMind DB files and maps IP addresses to two-letter
-country codes such as "DE", "FR" and "US".
+A Perl module that reads MaxMind DB files and maps IP addresses to location
+information such as country and city names.
 
     use IP::Geolocation::MMDB;
     my $db = IP::Geolocation::MMDB->new(file => 'Country.mmdb');
@@ -15,8 +15,8 @@ Requires Alien::libmaxminddb from CPAN.  On Windows, Alien::MSYS needs to be
 installed.  Requires Math::BigInt version 1.999806, which is distributed with
 Perl 5.26 and newer.
 
-Requires an IP to country or city database in the MaxMind DB file format from
-[DP-IP.com](https://db-ip.com/) or [MaxMind](https://www.maxmind.com/).
+Requires an IP to country, city or ASN database in the MaxMind DB file format
+from [MaxMind](https://www.maxmind.com/) or [DP-IP.com](https://db-ip.com/).
 
 ## INSTALLATION
 
