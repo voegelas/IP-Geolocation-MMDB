@@ -105,7 +105,29 @@ the IP address or the undefined value.  Dies if the address is not a valid IP
 address.
 
 The returned data is usually a hash reference but could also be a an array
-reference or a scalar for custom databases.
+reference or a scalar for custom databases.  Here's an example from an IP to
+city database:
+
+  {
+    city => {
+      geoname_id => 2950159,
+      names      => {
+        en => "Berlin"
+      }
+    },
+    country => {
+      geoname_id => 2921044,
+      iso_code   => "DE",
+      names      => {
+        en => "Germany",
+        fr => "Allemagne"
+      }
+    },
+    location => {
+      latitude  => 52.524,
+      longitude => 13.411
+    }
+  }
 
 =head2 iterate_search_tree
 
@@ -125,8 +147,8 @@ data record and node in the tree.  Both callbacks are optional.
 The data callback is called with a numeric IP address as a L<Math::BigInt>
 object, a network prefix length and the data associated with the network.
 
-The node callback is called with a node number and the children's node
-numbers.
+The node callback is called with the node's number in the tree and the
+children's node numbers.
 
 =head2 metadata
 
