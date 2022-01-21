@@ -31,10 +31,12 @@ sub getcc {
   my $country_code;
 
   my $data = $self->record_for_address($ip_address);
-  if (exists $data->{country}) {
-    my $country = $data->{country};
-    if (exists $country->{iso_code}) {
-      $country_code = $country->{iso_code};
+  if (ref $data eq 'HASH') {
+    if (exists $data->{country}) {
+      my $country = $data->{country};
+      if (exists $country->{iso_code}) {
+        $country_code = $country->{iso_code};
+      }
     }
   }
 
