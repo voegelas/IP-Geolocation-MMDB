@@ -201,6 +201,10 @@ Either an invalid node was looked up or the database is corrupt.
 
 An unknown record type was found in the database.
 
+=item B<< Invalid depth when reading node >>
+
+An error occurred while traversing the search tree.
+
 =back
 
 =head1 CONFIGURATION AND ENVIRONMENT
