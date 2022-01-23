@@ -1,5 +1,9 @@
 Revision history for IP::Geolocation::MMDB
 
+1.001  2022-01-23 07:25:04 CET
+
+  - Require libmaxminddb 1.2.0 or newer
+
 1.000  2022-01-22 09:06:57 CET
 
   - Depend on Math::BigInt 1.999806 and use as_hex() instead of to_hex()

@@ -6,7 +6,7 @@ use 5.016;
 use warnings;
 use utf8;
 
-our $VERSION = 1.000;
+our $VERSION = 1.001;
 
 sub new {
   my ($class, %attrs) = @_;
@@ -81,7 +81,7 @@ IP::Geolocation::MMDB::Metadata - Metadata from a MaxMind DB file
 
 =head1 VERSION
 
-version 1.000
+version 1.001
 
 =head1 SYNOPSIS
 
