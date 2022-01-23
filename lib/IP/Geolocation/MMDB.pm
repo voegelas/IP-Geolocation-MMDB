@@ -213,6 +213,8 @@ None.
 
 =head1 DEPENDENCIES
 
+Requires libmaxminddb 1.2.0 or newer.
+
 Requires L<Alien::libmaxminddb> from CPAN.  On Windows, L<Alien::MSYS> needs
 to be installed.  Requires L<Math::BigInt> version 1.999806, which is
 distributed with Perl 5.26 and newer.

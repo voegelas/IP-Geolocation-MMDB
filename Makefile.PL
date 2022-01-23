@@ -11,6 +11,7 @@ use ExtUtils::MakeMaker;
 die "OS unsupported\n" if $^O eq 'MSWin32' && !eval { require Alien::MSYS };
 use Config;
 use Alien::libmaxminddb;
+die "OS unsupported\n" if Alien::libmaxminddb->version =~ m{^(0|1\.[01])\.};
 
 my %WriteMakefileArgs = (
   "ABSTRACT" => "Read MaxMind DB files",

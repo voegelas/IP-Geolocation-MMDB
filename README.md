@@ -11,6 +11,8 @@ information such as country and city names.
 
 ## DEPENDENCIES
 
+Requires libmaxminddb 1.2.0 or newer.
+
 Requires Alien::libmaxminddb from CPAN.  On Windows, Alien::MSYS needs to be
 installed.  Requires Math::BigInt version 1.999806, which is distributed with
 Perl 5.26 and newer.
