@@ -1,5 +1,9 @@
 Revision history for IP::Geolocation::MMDB
 
+1.002  2022-01-24 04:51:57 CET
+
+  - Skip the tests if libmaxminddb is too old
+
 1.001  2022-01-23 07:25:04 CET
 
   - Require libmaxminddb 1.2.0 or newer
