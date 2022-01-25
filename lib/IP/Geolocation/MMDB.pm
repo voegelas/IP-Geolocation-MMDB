@@ -213,14 +213,15 @@ None.
 
 =head1 DEPENDENCIES
 
-Requires libmaxminddb 1.2.0 or newer.
+Requires L<Alien::libmaxminddb> from CPAN.  Requires L<Math::BigInt> version
+1.999806, which is distributed with Perl 5.26 and newer.
 
-Requires L<Alien::libmaxminddb> from CPAN.  On Windows, L<Alien::MSYS> needs
-to be installed.  Requires L<Math::BigInt> version 1.999806, which is
-distributed with Perl 5.26 and newer.
+Requires libmaxminddb 1.2.0 or newer.
 
 Requires an IP to country, city or ASN database in the MaxMind DB file format
 from L<MaxMind|https://www.maxmind.com/> or L<DP-IP.com|https://db-ip.com/>.
+
+Windows is not supported.  Please do not ask for Windows support.
 
 =head1 INCOMPATIBILITIES
 
@@ -236,8 +237,6 @@ If your Perl interpreter does not support 64-bit integers,
 MMDB_DATA_TYPE_UINT64 values are put into Math::BigInt objects;
 
 MMDB_DATA_TYPE_UINT128 values are put into Math::BigInt objects;
-
-Some Windows versions do not support IPv6.
 
 =head1 LICENSE AND COPYRIGHT
 

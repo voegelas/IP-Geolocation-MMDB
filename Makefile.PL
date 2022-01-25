@@ -8,7 +8,7 @@ use warnings;
 use 5.016;
 use ExtUtils::MakeMaker;
 
-die "OS unsupported\n" if $^O eq 'MSWin32' && !eval { require Alien::MSYS };
+die "OS unsupported\n" if $^O eq 'MSWin32';
 use Config;
 use Alien::libmaxminddb;
 die "OS unsupported\n" if Alien::libmaxminddb->version =~ m{^(0|1\.[01])\.};
