@@ -1,5 +1,9 @@
 Revision history for IP::Geolocation::MMDB
 
+1.003  2022-01-25 15:13:30 CET
+
+  - Windows is no longer supported
+
 1.002  2022-01-24 04:51:57 CET
 
   - Skip the tests if libmaxminddb is too old
