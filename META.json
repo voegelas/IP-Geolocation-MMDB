@@ -44,6 +44,7 @@
       },
       "test" : {
          "requires" : {
+            "Alien::libmaxminddb" : "0",
             "File::Spec::Functions" : "0",
             "Test::More" : "0"
          }
