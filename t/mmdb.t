@@ -17,9 +17,9 @@ my $version = IP::Geolocation::MMDB::libmaxminddb_version;
 
 my $expected_version = Alien::libmaxminddb->version;
 
-# Check whether the module was linked against the wrong library version.
+# Check if the module was linked against the wrong library version.
 if ($version ne $expected_version) {
-  plan skip_all => "ERROR: wrong libmaxminddb version, got $version, expected $expected_version";
+  plan skip_all => "Error: wrong libmaxminddb version, got $version, expected $expected_version";
 }
 
 diag 'libmaxminddb version is ' . $version;

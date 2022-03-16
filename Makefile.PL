@@ -8,10 +8,7 @@ use warnings;
 use 5.016;
 use ExtUtils::MakeMaker;
 
-die "OS unsupported\n" if $^O eq 'MSWin32' && !eval { require Alien::MSYS };
 use Config;
-use Alien::libmaxminddb;
-die "OS unsupported\n" if !Alien::libmaxminddb->atleast_version('1.2.0');
 
 my %WriteMakefileArgs = (
   "ABSTRACT" => "Read MaxMind DB files",
@@ -67,3 +64,15 @@ delete $WriteMakefileArgs{CONFIGURE_REQUIRES}
   unless eval { ExtUtils::MakeMaker->VERSION(6.52) };
 
 WriteMakefile(%WriteMakefileArgs);
+
+use Alien::libmaxminddb;
+if (!Alien::libmaxminddb->atleast_version('1.2.0')) {
+  warn "Error: libmaxminddb is too old.\n";
+  die "OS unsupported\n";
+}
+# Some Math::BigInt versions fail on i386 if Perl is built with -Dusequadmath.
+use Math::BigInt;
+if (!eval { Math::BigInt->from_bytes(pack 'C6', 0xff, 0xff, 0xb0, 0x09, 0x00, 0x00)->as_hex eq '0xffffb0090000' }) {
+  warn "Error: Math::BigInt is too old or broken.\n";
+  die "OS unsupported\n";
+}
