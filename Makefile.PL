@@ -15,7 +15,8 @@ my %WriteMakefileArgs = (
   "AUTHOR" => "Andreas V\x{f6}gele <voegelas\@cpan.org>",
   "CONFIGURE_REQUIRES" => {
     "Alien::libmaxminddb" => 0,
-    "ExtUtils::MakeMaker" => 0
+    "ExtUtils::MakeMaker" => 0,
+    "Math::BigInt" => "1.999806"
   },
   "DISTNAME" => "IP-Geolocation-MMDB",
   "LICENSE" => "perl",

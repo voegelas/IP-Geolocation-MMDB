@@ -17,7 +17,8 @@
       "configure" : {
          "requires" : {
             "Alien::libmaxminddb" : "0",
-            "ExtUtils::MakeMaker" : "0"
+            "ExtUtils::MakeMaker" : "0",
+            "Math::BigInt" : "1.999806"
          }
       },
       "develop" : {
