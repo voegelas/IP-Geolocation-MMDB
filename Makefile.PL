@@ -66,9 +66,11 @@ delete $WriteMakefileArgs{CONFIGURE_REQUIRES}
 
 WriteMakefile(%WriteMakefileArgs);
 
+# Alien::Base->atleast_version might not be available.
 use Alien::libmaxminddb;
-if (!Alien::libmaxminddb->atleast_version('1.2.0')) {
-  warn "Error: libmaxminddb is too old.\n";
+my $version = Alien::libmaxminddb->version;
+if ($version =~ m{^(0|1\.[01])\.}) {
+  warn "Error: libmaxminddb $version is too old.\n";
   die "OS unsupported\n";
 }
 # Some Math::BigInt versions fail on i386 if Perl is built with -Dusequadmath.
