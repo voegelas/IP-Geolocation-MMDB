@@ -13,8 +13,8 @@
 #  define dTHXfield(var)
 #endif
 
-typedef struct {
-  MMDB_s *mmdb;
+typedef struct IP__Geolocation__MMDB {
+  MMDB_s mmdb;
   SV *selfrv;
   dTHXfield(perl)
 } *IP__Geolocation__MMDB;
@@ -24,9 +24,7 @@ new_IP__Geolocation__MMDB(void)
 {
   IP__Geolocation__MMDB self;
 
-  Newxc(self, sizeof(*self) + sizeof(MMDB_s), char, void);
-  Zero(self, sizeof(*self) + sizeof(MMDB_s), char);
-  self->mmdb = (MMDB_s *)((char *)self + sizeof(*self));
+  Newxz(self, 1, struct IP__Geolocation__MMDB);
   return self;
 }
 
@@ -44,7 +42,7 @@ init_iterate_data(iterate_data *data, IP__Geolocation__MMDB self,
   data->self = self;
   data->data_callback = data_callback;
   data->node_callback = node_callback;
-  data->max_depth = (6 == self->mmdb->metadata.ip_version) ? 128 : 32;
+  data->max_depth = (6 == self->mmdb.metadata.ip_version) ? 128 : 32;
 }
 
 static SV *
@@ -385,7 +383,7 @@ iterate_search_nodes(iterate_data *data, uint32_t node_num, numeric_ip ipnum,
                      int depth)
 {
   MMDB_search_node_s node;
-  int mmdb_error = MMDB_read_node(data->self->mmdb, node_num, &node);
+  int mmdb_error = MMDB_read_node(&data->self->mmdb, node_num, &node);
   if (MMDB_SUCCESS != mmdb_error) {
     const char *error = MMDB_strerror(mmdb_error);
     croak("Error reading node %u: %s", (unsigned int) node_num, error);
@@ -421,7 +419,7 @@ _new(class, file, flags)
   CODE:
     self = new_IP__Geolocation__MMDB();
 
-    mmdb_error = MMDB_open(file, flags, self->mmdb);
+    mmdb_error = MMDB_open(file, flags, &self->mmdb);
     if (MMDB_SUCCESS != mmdb_error) {
       Safefree(self);
       error = MMDB_strerror(mmdb_error);
@@ -440,7 +438,7 @@ void
 DESTROY(self)
   IP::Geolocation::MMDB self
   CODE:
-    MMDB_close(self->mmdb);
+    MMDB_close(&self->mmdb);
     Safefree(self);
 
 SV *
@@ -461,7 +459,7 @@ record_for_address(self, ...)
       croak("%s", "You must provide an IP address to look up");
     }
     result =
-      MMDB_lookup_string(self->mmdb, ip_address, &gai_error, &mmdb_error);
+      MMDB_lookup_string(&self->mmdb, ip_address, &gai_error, &mmdb_error);
     if (0 != gai_error) {
       croak("The IP address you provided (%s) is not a valid IPv4 or IPv6 address",
             ip_address);
@@ -520,7 +518,7 @@ _metadata(self)
     RETVAL = &PL_sv_undef;
     entry_data_list = NULL;
     mmdb_error =
-      MMDB_get_metadata_as_entry_data_list(self->mmdb, &entry_data_list);
+      MMDB_get_metadata_as_entry_data_list(&self->mmdb, &entry_data_list);
     if (MMDB_SUCCESS == mmdb_error) {
       (void) decode_entry_data_list(self, entry_data_list,
                                     &RETVAL, &mmdb_error);
