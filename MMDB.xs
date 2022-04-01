@@ -455,7 +455,7 @@ record_for_address(self, ...)
     if (items > 1) {
       ip_address = SvPVbyte_nolen(ST(1));
     }
-    if (NULL == ip_address|| '\0' == *ip_address) {
+    if (NULL == ip_address || '\0' == *ip_address) {
       croak("%s", "You must provide an IP address to look up");
     }
     result =
