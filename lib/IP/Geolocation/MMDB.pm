@@ -21,6 +21,7 @@ sub new {
   my $flags = 0;
 
   my $self = $class->_new($file, $flags);
+  bless $self, $class;
 
   return $self;
 }
