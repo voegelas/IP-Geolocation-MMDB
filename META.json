@@ -64,13 +64,13 @@
    "release_status" : "stable",
    "resources" : {
       "bugtracker" : {
-         "web" : "https://gitlab.com/voegelas/ip-geolocation-mmdb/-/issues"
+         "web" : "https://github.com/voegelas/IP-Geolocation-MMDB/issues"
       },
-      "homepage" : "https://gitlab.com/voegelas/ip-geolocation-mmdb",
+      "homepage" : "https://github.com/voegelas/IP-Geolocation-MMDB/wiki",
       "repository" : {
          "type" : "git",
-         "url" : "https://gitlab.com/voegelas/ip-geolocation-mmdb.git",
-         "web" : "https://gitlab.com/voegelas/ip-geolocation-mmdb/-/tree/main"
+         "url" : "https://github.com/voegelas/IP-Geolocation-MMDB.git",
+         "web" : "https://github.com/voegelas/IP-Geolocation-MMDB"
       }
    },
    "version" : "1.008",
