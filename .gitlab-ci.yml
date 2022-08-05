@@ -1,7 +1,6 @@
 image: voegelas/perl-devel-cover
 
 before_script:
-  - perl -V
   - cpanm --quiet --notest --installdeps .
 
 test_job:
