@@ -409,7 +409,8 @@ MODULE = IP::Geolocation::MMDB PACKAGE = IP::Geolocation::MMDB
 PROTOTYPES: DISABLE
 
 SV *
-_new(class, file, flags)
+_new(klass, file, flags)
+  SV *klass
   const char *file
   U32 flags
   INIT:
@@ -428,8 +429,7 @@ _new(class, file, flags)
 
     storeTHX(self->perl);
 
-    RETVAL = newSV(0);
-    sv_setref_pv(RETVAL, "IP::Geolocation::MMDB", self);
+    RETVAL = sv_bless(newRV_noinc(newSViv(PTR2IV(self))), gv_stashsv(klass, GV_ADD));
     self->selfrv = SvRV(RETVAL); /* no inc */
   OUTPUT:
     RETVAL
