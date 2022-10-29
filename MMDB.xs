@@ -19,15 +19,6 @@ typedef struct IP__Geolocation__MMDB {
   dTHXfield(perl)
 } *IP__Geolocation__MMDB;
 
-static IP__Geolocation__MMDB
-new_IP__Geolocation__MMDB(void)
-{
-  IP__Geolocation__MMDB self;
-
-  Newxz(self, 1, struct IP__Geolocation__MMDB);
-  return self;
-}
-
 typedef struct {
   IP__Geolocation__MMDB self;
   SV *data_callback;
@@ -422,7 +413,8 @@ _new(klass, file, flags)
     int mmdb_error;
     const char *error;
   CODE:
-    self = new_IP__Geolocation__MMDB();
+    Newxz(self, 1, struct IP__Geolocation__MMDB);
+    storeTHX(self->perl);
 
     mmdb_error = MMDB_open(file, flags, &self->mmdb);
     if (MMDB_SUCCESS != mmdb_error) {
@@ -430,8 +422,6 @@ _new(klass, file, flags)
       error = MMDB_strerror(mmdb_error);
       croak("Error opening database file \"%s\": %s", file, error);
     }
-
-    storeTHX(self->perl);
 
     RETVAL = sv_bless(newRV_noinc(newSViv(PTR2IV(self))), gv_stashsv(klass, GV_ADD));
     self->selfrv = SvRV(RETVAL); /* no inc */
