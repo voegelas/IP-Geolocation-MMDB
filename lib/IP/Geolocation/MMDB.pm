@@ -14,17 +14,6 @@ use Math::BigInt 1.999806;
 require XSLoader;
 XSLoader::load(__PACKAGE__, $VERSION);
 
-sub new {
-  my ($class, %attrs) = @_;
-
-  my $file  = $attrs{file} or die q{The "file" parameter is mandatory};
-  my $flags = 0;
-
-  my $self = $class->_new($file, $flags);
-
-  return $self;
-}
-
 sub getcc {
   my ($self, $ip_address) = @_;
 
@@ -157,6 +146,12 @@ children's node numbers.
   my $metadata = $db->metadata;
 
 Returns an L<IP::Geolocation::MMDB::Metadata> object for the database.
+
+=head2 file
+
+  my $file = $db->file;
+
+Returns the file path passed to the constructor.
 
 =head2 libmaxminddb_version
 

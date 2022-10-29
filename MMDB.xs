@@ -15,6 +15,7 @@
 
 typedef struct IP__Geolocation__MMDB {
   MMDB_s mmdb;
+  SV *file;
   SV *selfrv;
   dTHXfield(perl)
 } *IP__Geolocation__MMDB;
@@ -404,23 +405,46 @@ IP::Geolocation::MMDB T_PTROBJ
 HERE
 
 SV *
-_new(klass, file, flags)
+new(klass, ...)
   SV *klass
-  const char *file
-  U32 flags
   INIT:
     IP__Geolocation__MMDB self;
+    SV *file = NULL;
+    U32 flags = 0;
+    I32 i;
+    const char *key;
+    SV *value;
+    const char *filename;
     int mmdb_error;
     const char *error;
   CODE:
+    if ((items - 1) % 2 != 0) {
+      warn("Odd-length list passed to %" SVf " constructor", SVfARG(klass));
+    }
+
+    for (i = 1; i < items; i += 2) {
+      key   = SvPV_nolen_const(ST(i));
+      value = ST(i + 1);
+      if (strEQ(key, "file")) {
+        file = value;
+      }
+    }
+
+    if (file == NULL) {
+      croak("The \"file\" parameter is mandatory");
+    }
+
+    filename = SvPVbyte_nolen(file);
+
     Newxz(self, 1, struct IP__Geolocation__MMDB);
     storeTHX(self->perl);
+    self->file = SvREFCNT_inc(file);
 
-    mmdb_error = MMDB_open(file, flags, &self->mmdb);
+    mmdb_error = MMDB_open(filename, flags, &self->mmdb);
     if (MMDB_SUCCESS != mmdb_error) {
       Safefree(self);
       error = MMDB_strerror(mmdb_error);
-      croak("Error opening database file \"%s\": %s", file, error);
+      croak("Error opening database file \"%" SVf "\": %s", SVfARG(file), error);
     }
 
     RETVAL = sv_bless(newRV_noinc(newSViv(PTR2IV(self))), gv_stashsv(klass, GV_ADD));
@@ -433,6 +457,7 @@ DESTROY(self)
   IP::Geolocation::MMDB self
   CODE:
     MMDB_close(&self->mmdb);
+    SvREFCNT_dec(self->file);
     Safefree(self);
 
 SV *
@@ -522,6 +547,14 @@ _metadata(self)
       error = MMDB_strerror(mmdb_error);
       croak("Error getting metadata: %s", error);
     }
+  OUTPUT:
+    RETVAL
+
+SV *
+file(self)
+  IP::Geolocation::MMDB self
+  CODE:
+    RETVAL = SvREFCNT_inc(self->file);
   OUTPUT:
     RETVAL
 

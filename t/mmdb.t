@@ -37,7 +37,9 @@ my $file = catfile(qw(t data Test-City.mmdb));
 
 my $mmdb = new_ok 'IP::Geolocation::MMDB::Subclass' => [file => $file];
 
-can_ok $mmdb, qw(getcc record_for_address iterate_search_tree metadata);
+can_ok $mmdb, qw(getcc record_for_address iterate_search_tree metadata file);
+
+is $mmdb->file, $file, 'file matches';
 
 ok !eval { $mmdb->record_for_address('-1') },
   'invalid ip address throws exception';
