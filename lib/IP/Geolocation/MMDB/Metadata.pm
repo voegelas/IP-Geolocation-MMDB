@@ -9,65 +9,65 @@ use utf8;
 our $VERSION = 1.009;
 
 sub new {
-  my ($class, %attrs) = @_;
+    my ($class, %attrs) = @_;
 
-  my $self = bless \%attrs, $class;
+    my $self = bless \%attrs, $class;
 
-  return $self;
+    return $self;
 }
 
 sub binary_format_major_version {
-  my ($self) = @_;
+    my ($self) = @_;
 
-  return $self->{binary_format_major_version};
+    return $self->{binary_format_major_version};
 }
 
 sub binary_format_minor_version {
-  my ($self) = @_;
+    my ($self) = @_;
 
-  return $self->{binary_format_minor_version};
+    return $self->{binary_format_minor_version};
 }
 
 sub build_epoch {
-  my ($self) = @_;
+    my ($self) = @_;
 
-  return $self->{build_epoch};
+    return $self->{build_epoch};
 }
 
 sub database_type {
-  my ($self) = @_;
+    my ($self) = @_;
 
-  return $self->{database_type};
+    return $self->{database_type};
 }
 
 sub languages {
-  my ($self) = @_;
+    my ($self) = @_;
 
-  return $self->{languages};
+    return $self->{languages};
 }
 
 sub description {
-  my ($self) = @_;
+    my ($self) = @_;
 
-  return $self->{description};
+    return $self->{description};
 }
 
 sub ip_version {
-  my ($self) = @_;
+    my ($self) = @_;
 
-  return $self->{ip_version};
+    return $self->{ip_version};
 }
 
 sub node_count {
-  my ($self) = @_;
+    my ($self) = @_;
 
-  return $self->{node_count};
+    return $self->{node_count};
 }
 
 sub record_size {
-  my ($self) = @_;
+    my ($self) = @_;
 
-  return $self->{record_size};
+    return $self->{record_size};
 }
 
 1;

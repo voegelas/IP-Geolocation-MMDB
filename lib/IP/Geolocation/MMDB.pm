@@ -15,35 +15,35 @@ require XSLoader;
 XSLoader::load(__PACKAGE__, $VERSION);
 
 sub getcc {
-  my ($self, $ip_address) = @_;
+    my ($self, $ip_address) = @_;
 
-  my $country_code;
+    my $country_code;
 
-  my $data = $self->record_for_address($ip_address);
-  if (ref $data eq 'HASH') {
-    if (exists $data->{country}) {
-      my $country = $data->{country};
-      if (exists $country->{iso_code}) {
-        $country_code = $country->{iso_code};
-      }
+    my $data = $self->record_for_address($ip_address);
+    if (ref $data eq 'HASH') {
+        if (exists $data->{country}) {
+            my $country = $data->{country};
+            if (exists $country->{iso_code}) {
+                $country_code = $country->{iso_code};
+            }
+        }
     }
-  }
 
-  return $country_code;
+    return $country_code;
 }
 
 sub metadata {
-  my ($self) = @_;
+    my ($self) = @_;
 
-  return IP::Geolocation::MMDB::Metadata->new(%{$self->_metadata});
+    return IP::Geolocation::MMDB::Metadata->new(%{$self->_metadata});
 }
 
 ## no critic (Subroutines::ProhibitUnusedPrivateSubroutines)
 
 sub _to_bigint {
-  my ($self, $bytes) = @_;
+    my ($self, $bytes) = @_;
 
-  return Math::BigInt->from_bytes($bytes);
+    return Math::BigInt->from_bytes($bytes);
 }
 
 1;
