@@ -1,7 +1,7 @@
 /*
  * Read MaxMind DB files
  *
- * Copyright 2022 Andreas Vögele
+ * Copyright (C) 2022 Andreas Vögele
  *
  * This module is free software; you can redistribute it and/or modify it
  * under the same terms as Perl itself.
