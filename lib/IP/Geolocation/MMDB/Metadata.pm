@@ -192,6 +192,10 @@ None.
 
 None.
 
+=head1 BUGS AND LIMITATIONS
+
+None known.
+
 =head1 SEE ALSO
 
 L<IP::Geolocation::MMDB>
@@ -199,10 +203,6 @@ L<IP::Geolocation::MMDB>
 =head1 AUTHOR
 
 Andreas Vögele E<lt>voegelas@cpan.orgE<gt>
-
-=head1 BUGS AND LIMITATIONS
-
-None known.
 
 =head1 LICENSE AND COPYRIGHT
 

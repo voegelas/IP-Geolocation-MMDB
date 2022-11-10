@@ -219,6 +219,13 @@ from L<MaxMind|https://www.maxmind.com/> or L<DP-IP.com|https://db-ip.com/>.
 
 None.
 
+=head1 BUGS AND LIMITATIONS
+
+If your Perl interpreter does not support 64-bit integers,
+MMDB_DATA_TYPE_UINT64 values are put into Math::BigInt objects;
+
+MMDB_DATA_TYPE_UINT128 values are put into Math::BigInt objects;
+
 =head1 ACKNOWLEDGEMENTS
 
 Thanks to all who have contributed patches and reported bugs:
@@ -238,13 +245,6 @@ Yujuan Jiang
 =head1 AUTHOR
 
 Andreas Vögele E<lt>voegelas@cpan.orgE<gt>
-
-=head1 BUGS AND LIMITATIONS
-
-If your Perl interpreter does not support 64-bit integers,
-MMDB_DATA_TYPE_UINT64 values are put into Math::BigInt objects;
-
-MMDB_DATA_TYPE_UINT128 values are put into Math::BigInt objects;
 
 =head1 LICENSE AND COPYRIGHT
 
