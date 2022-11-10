@@ -219,19 +219,25 @@ from L<MaxMind|https://www.maxmind.com/> or L<DP-IP.com|https://db-ip.com/>.
 
 None.
 
-=head1 AUTHOR
+=head1 ACKNOWLEDGEMENTS
 
-Andreas Vögele E<lt>voegelas@cpan.orgE<gt>
-
-=head1 CONTRIBUTORS
+Thanks to all who have contributed patches and reported bugs:
 
 =over
+
+=item *
+
+Alex Granovskiy
 
 =item *
 
 Yujuan Jiang
 
 =back
+
+=head1 AUTHOR
+
+Andreas Vögele E<lt>voegelas@cpan.orgE<gt>
 
 =head1 BUGS AND LIMITATIONS
 
