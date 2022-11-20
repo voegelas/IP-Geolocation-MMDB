@@ -17,11 +17,11 @@
 #include <maxminddb.h>
 
 #ifdef MULTIPLICITY
-# define storeTHX(var) (var) = aTHX
-# define dTHXfield(var) tTHX var;
+#define storeTHX(var) (var) = aTHX
+#define dTHXfield(var) tTHX var;
 #else
-# define storeTHX(var) dNOOP
-# define dTHXfield(var)
+#define storeTHX(var) dNOOP
+#define dTHXfield(var)
 #endif
 
 typedef struct ip_geolocation_mmdb {
@@ -128,17 +128,15 @@ createSVu128(IP__Geolocation__MMDB self, uint8_t u[16])
 static SV *
 createSVu128(IP__Geolocation__MMDB self, mmdb_uint128_t u)
 {
-#if BYTEORDER == 0x4321 || BYTEORDER == 0x87654321
+#ifdef WORDS_BIGENDIAN
     return to_bigint(self, (const char *) &u, sizeof(u));
-#elif BYTEORDER == 0x1234 || BYTEORDER == 0x12345678
+#else
     char bytes[sizeof(u)];
     size_t n;
     for (n = 0; n < sizeof(u); ++n) {
         bytes[n] = ((const char *) &u)[sizeof(u) - n - 1];
     }
     return to_bigint(self, bytes, sizeof(bytes));
-#else
-#error "Unknown BYTEORDER"
 #endif
 }
 #endif
@@ -149,17 +147,15 @@ createSVu128(IP__Geolocation__MMDB self, mmdb_uint128_t u)
 static SV *
 createSVu64(IP__Geolocation__MMDB self, uint64_t u)
 {
-#if BYTEORDER == 0x4321 || BYTEORDER == 0x87654321
+#ifdef WORDS_BIGENDIAN
     return to_bigint(self, (const char *) &u, sizeof(u));
-#elif BYTEORDER == 0x1234 || BYTEORDER == 0x12345678
+#else
     char bytes[sizeof(u)];
     size_t n;
     for (n = 0; n < sizeof(u); ++n) {
         bytes[n] = ((const char *) &u)[sizeof(u) - n - 1];
     }
     return to_bigint(self, bytes, sizeof(bytes));
-#else
-#error "Unknown BYTEORDER"
 #endif
 }
 #endif
