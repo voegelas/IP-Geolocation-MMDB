@@ -249,10 +249,6 @@ Thanks to all who have contributed patches and reported bugs:
 
 =item *
 
-Alex Granovskiy
-
-=item *
-
 Yujuan Jiang
 
 =back
