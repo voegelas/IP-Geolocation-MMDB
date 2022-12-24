@@ -34,32 +34,33 @@ ok !eval { IP::Geolocation::MMDB->new(file => 'nonexistent') },
 my $file = catfile(qw(t data Test-City.mmdb));
 
 # Ensure that the module is subclassable by using an empty subclass.
-@IP::Geolocation::MMDB::Subclass::ISA = qw(IP::Geolocation::MMDB);
+@MaxMind::DB::Reader::ISA = qw(IP::Geolocation::MMDB);
 
-my $mmdb = new_ok 'IP::Geolocation::MMDB::Subclass' => [file => $file];
+my $reader = new_ok 'MaxMind::DB::Reader' => [file => $file];
 
-can_ok $mmdb, qw(getcc record_for_address iterate_search_tree metadata file);
+can_ok $reader,
+    qw(getcc record_for_address iterate_search_tree metadata file);
 
-is $mmdb->file, $file, 'file matches';
+is $reader->file, $file, 'file matches';
 
-ok !eval { $mmdb->record_for_address('-1') },
+ok !eval { $reader->record_for_address('-1') },
     'invalid ip address throws exception';
 
-ok !$mmdb->record_for_address('127.0.0.1'), 'no data for localhost';
+ok !$reader->record_for_address('127.0.0.1'), 'no data for localhost';
 
 my $uint64  = Math::BigInt->new('4702394921427289928');
 my $uint128 = Math::BigInt->new('86743875649080753100636639643044826960');
 
-my $r = $mmdb->record_for_address('176.9.54.163');
+my $r = $reader->record_for_address('176.9.54.163');
 isa_ok $r, 'HASH';
-is $mmdb->getcc('176.9.54.163'), 'DE', 'IPv4 address is in Germany';
+is $reader->getcc('176.9.54.163'), 'DE', 'IPv4 address is in Germany';
 
 SKIP:
 {
     skip 'IPv6 tests on Windows', 2 if $^O eq 'MSWin32';
 
-    isa_ok $mmdb->record_for_address('2a01:4f8:150:74ab::2'), 'HASH';
-    is $mmdb->getcc('2a01:4f8:150:74ab::2'), 'DE',
+    isa_ok $reader->record_for_address('2a01:4f8:150:74ab::2'), 'HASH';
+    is $reader->getcc('2a01:4f8:150:74ab::2'), 'DE',
         'IPv6 address is in Germany';
 }
 
@@ -76,8 +77,7 @@ is $r->{x_uint64},      $uint64,        'uint64 matches';
 is $r->{x_uint128},     $uint128,       'uint128 matches';
 is $r->{x_utf8_string}, 'Фалькенштайн', 'utf8_string matches';
 
-my $m = $mmdb->metadata;
-isa_ok $m, 'IP::Geolocation::MMDB::Metadata';
+my $m = $reader->metadata;
 can_ok $m, qw(
     binary_format_major_version binary_format_minor_version build_epoch
     database_type languages description ip_version node_count record_size
@@ -113,7 +113,7 @@ sub node_callback {
     return;
 }
 
-$mmdb->iterate_search_tree(\&data_callback, \&node_callback);
+$reader->iterate_search_tree(\&data_callback, \&node_callback);
 
 cmp_ok scalar keys %data_for,     '>', 0, 'data_callback was called';
 cmp_ok scalar keys %children_for, '>', 0, 'node_callback was called';
