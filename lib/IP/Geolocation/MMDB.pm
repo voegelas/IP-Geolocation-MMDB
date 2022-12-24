@@ -226,6 +226,21 @@ MMDB_DATA_TYPE_UINT64 values are put into Math::BigInt objects;
 
 MMDB_DATA_TYPE_UINT128 values are put into Math::BigInt objects;
 
+IP::Geolocation::MMDB can replace MaxMind::DB::Reader in many cases with the
+following differences:
+
+=over
+
+=item *
+
+The classes aren't Moo classes.
+
+=item *
+
+There is no replacement for MaxMind::DB::Reader::Decoder.
+
+=back
+
 =head1 ACKNOWLEDGEMENTS
 
 Thanks to all who have contributed patches and reported bugs:
