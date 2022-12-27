@@ -222,9 +222,9 @@ None.
 =head1 BUGS AND LIMITATIONS
 
 If your Perl interpreter does not support 64-bit integers,
-MMDB_DATA_TYPE_UINT64 values are put into Math::BigInt objects;
+MMDB_DATA_TYPE_UINT64 values are put into Math::BigInt objects.
 
-MMDB_DATA_TYPE_UINT128 values are put into Math::BigInt objects;
+MMDB_DATA_TYPE_UINT128 values are put into Math::BigInt objects.
 
 IP::Geolocation::MMDB can replace MaxMind::DB::Reader in many cases with the
 following differences:
