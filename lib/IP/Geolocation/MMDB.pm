@@ -208,12 +208,14 @@ None.
 
 =head1 DEPENDENCIES
 
-Requires L<Alien::libmaxminddb> from CPAN.  Requires L<Math::BigInt> version
-1.999806, which is distributed with Perl 5.26 and newer.  Requires
-libmaxminddb 1.2.0 or newer.
+Requires L<Math::BigInt> version 1.999806, which is distributed with Perl 5.26
+and newer.  Requires libmaxminddb 1.2.0 or newer.
 
 Requires an IP to country, city or ASN database in the MaxMind DB file format
 from L<MaxMind|https://www.maxmind.com/> or L<DP-IP.com|https://db-ip.com/>.
+
+Alien::libmaxminddb from CPAN is a build dependency.  The built module does
+only depend on modules that are distributed with Perl.
 
 =head1 INCOMPATIBILITIES
 
