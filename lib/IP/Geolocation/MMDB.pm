@@ -62,7 +62,7 @@ version 1.010
 =head1 SYNOPSIS
 
   use IP::Geolocation::MMDB;
-  my $db = IP::Geolocation::MMDB->new(file => 'Country.mmdb');
+  my $db = IP::Geolocation::MMDB->new(file => '/path/to/Country.mmdb');
   my $metadata = $db->metadata;
   my $data = $db->record_for_address('1.2.3.4');
   my $country_code = $db->getcc('2620:fe::9');
@@ -76,7 +76,7 @@ information such as country and city names.
 
 =head2 new
 
-  my $db = IP::Geolocation::MMDB->new(file => 'Country.mmdb');
+  my $db = IP::Geolocation::MMDB->new(file => '/path/to/Country.mmdb');
 
 Returns a new database object.  Dies if the specified file cannot be read.
 

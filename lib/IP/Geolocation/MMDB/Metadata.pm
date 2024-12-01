@@ -86,7 +86,7 @@ version 1.010
 =head1 SYNOPSIS
 
   use IP::Geolocation::MMDB;
-  my $db = IP::Geolocation::MMDB->new(file => 'City.mmdb');
+  my $db = IP::Geolocation::MMDB->new(file => '/path/to/City.mmdb');
   my $metadata = $db->metadata;
 
 =head1 DESCRIPTION
