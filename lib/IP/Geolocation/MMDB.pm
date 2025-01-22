@@ -64,7 +64,7 @@ version 1.010
   use IP::Geolocation::MMDB;
   my $db = IP::Geolocation::MMDB->new(file => '/path/to/Country.mmdb');
   my $metadata = $db->metadata;
-  my $data = $db->record_for_address('1.2.3.4');
+  my $data = $db->get('1.2.3.4');
   my $country_code = $db->getcc('2620:fe::9');
 
 =head1 DESCRIPTION
@@ -80,20 +80,15 @@ information such as country and city names.
 
 Returns a new database object.  Dies if the specified file cannot be read.
 
-=head2 getcc
+=head2 get
 
-  my $country_code = $db->getcc($ip_address);
-
-Takes an IPv4 or IPv6 address as a string and returns a two-letter country
-code or the undefined value.  Dies if the address is not a valid IP address.
-
-=head2 record_for_address
-
-  my $data = $db->record_for_address($ip_address);
+  my $data = $db->get($ip_address);
+  my ($data, $prefix_length) = $db->get($ip_address);
 
 Takes an IPv4 or IPv6 address as a string and returns the data associated with
-the IP address or the undefined value.  Dies if the address is not a valid IP
-address.
+the IP address or the undefined value.  In list context, the data and the
+prefix length associated with the IP address are returned.  Dies if the
+address is not a valid IP address.
 
 The returned data is usually a hash reference but could also be a an array
 reference or a scalar for custom databases.  Here's an example from an IP to
@@ -119,6 +114,19 @@ city database:
       longitude => 13.411
     }
   }
+
+=head2 getcc
+
+  my $country_code = $db->getcc($ip_address);
+
+Takes an IPv4 or IPv6 address as a string and returns a two-letter country
+code or the undefined value.  Dies if the address is not a valid IP address.
+
+=head2 record_for_address
+
+  my $data = $db->record_for_address($ip_address);
+
+An alias for C<get> that always returns a scalar.
 
 =head2 iterate_search_tree
 
