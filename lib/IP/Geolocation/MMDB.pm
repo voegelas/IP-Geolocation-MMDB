@@ -87,8 +87,8 @@ Returns a new database object.  Dies if the specified file cannot be read.
 
 Takes an IPv4 or IPv6 address as a string and returns the data associated with
 the IP address or the undefined value.  In list context, the data and the
-prefix length associated with the IP address are returned.  Dies if the
-address is not a valid IP address.
+network prefix length associated with the IP address are returned.  Dies if
+the address is not a valid IP address.
 
 The returned data is usually a hash reference but could also be a an array
 reference or a scalar for custom databases.  Here's an example from an IP to
@@ -219,8 +219,8 @@ None.
 Requires L<Math::BigInt> version 1.999806, which is distributed with Perl 5.26
 and newer.  Requires libmaxminddb 1.2.0 or newer.
 
-Requires an IP to country, city or ASN database in the MaxMind DB file format
-from L<MaxMind|https://www.maxmind.com/> or L<DP-IP.com|https://db-ip.com/>.
+Requires a database in the MaxMind DB file format from
+L<MaxMind|https://www.maxmind.com/> or L<DP-IP.com|https://db-ip.com/>.
 
 Alien::libmaxminddb from CPAN is a build dependency.  The built module does
 only depend on modules that are distributed with Perl.
