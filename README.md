@@ -6,7 +6,7 @@ information such as country and city names.
     use IP::Geolocation::MMDB;
     my $db = IP::Geolocation::MMDB->new(file => '/path/to/Country.mmdb');
     my $metadata = $db->metadata;
-    my $data = $db->record_for_address('1.2.3.4');
+    my $data = $db->get('1.2.3.4');
     my $country_code = $db->getcc('2620:fe::9');
 
 ## DEPENDENCIES
