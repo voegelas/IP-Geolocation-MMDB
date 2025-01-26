@@ -251,6 +251,10 @@ There is no replacement for MaxMind::DB::Reader::Decoder.
 
 =back
 
+=head1 SEE ALSO
+
+See L<Geo::Location::IP> for object-oriented wrapper classes.
+
 =head1 ACKNOWLEDGEMENTS
 
 Thanks to all who have contributed patches and reported bugs:
