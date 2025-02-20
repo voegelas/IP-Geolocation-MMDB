@@ -53,7 +53,6 @@ my %WriteMakefileArgs = (
     "warnings" => 0
   },
   "TEST_REQUIRES" => {
-    "Alien::libmaxminddb" => 0,
     "File::Spec::Functions" => 0,
     "Test::More" => 0
   },
@@ -71,7 +70,6 @@ my %WriteMakefileArgs = (
 );
 
 my %FallbackPrereqs = (
-  "Alien::libmaxminddb" => 0,
   "File::Spec::Functions" => 0,
   "Math::BigInt" => "1.999806",
   "Test::More" => 0,
