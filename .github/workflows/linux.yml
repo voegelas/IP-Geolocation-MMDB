@@ -23,8 +23,7 @@ jobs:
         run: perl -V
       - name: Install dependencies
         run: |
-          apt-get install -y libmaxminddb-dev
-          cpanm --quiet --notest --installdeps .
+          apt-get install -y libmaxminddb-dev pkgconf
       - name: Run tests
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

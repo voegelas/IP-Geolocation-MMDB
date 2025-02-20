@@ -8,7 +8,6 @@ test:
       when: never
     - when: always
   script:
-    - apt-get install -y libmaxminddb-dev
-    - cpanm --quiet --notest --installdeps .
+    - apt-get install -y libmaxminddb-dev pkgconf
     - perl Makefile.PL
     - cover -test
