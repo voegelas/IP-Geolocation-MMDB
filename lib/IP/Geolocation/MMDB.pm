@@ -251,6 +251,13 @@ There is no replacement for MaxMind::DB::Reader::Decoder.
 
 =back
 
+Create the file F<MaxMind/DB/Reader.pm> in your C<@INC> path if you want to
+try IP::Geolocation::MMDB as a replacement for MaxMind::DB::Reader:
+
+  use IP::Geolocation::MMDB;
+  @MaxMind::DB::Reader::ISA = qw(IP::Geolocation::MMDB);
+  1;
+
 =head1 SEE ALSO
 
 See L<Geo::Location::IP> for object-oriented wrapper classes.
