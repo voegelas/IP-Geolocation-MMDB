@@ -20,7 +20,7 @@ jobs:
         run: perl -V
       - name: Install dependencies
         run: |
-          brew install libmaxminddb pkgconf
+          brew install libmaxminddb
       - name: Run tests
         run: |
           perl Makefile.PL
