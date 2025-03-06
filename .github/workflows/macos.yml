@@ -1,0 +1,27 @@
+---
+name: macos
+
+on:
+  push:
+    branches:
+      - '*'
+    tags-ignore:
+      - '*'
+  pull_request:
+
+jobs:
+  perl:
+
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: perl -V
+        run: perl -V
+      - name: Install dependencies
+        run: |
+          brew install libmaxminddb
+      - name: Run tests
+        run: |
+          perl Makefile.PL
+          make test
