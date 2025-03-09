@@ -33,6 +33,12 @@ else {
  chomp($libs = `pkgconf --libs libmaxminddb` // '-lmaxminddb');
  chomp($version = `pkgconf --modversion libmaxminddb` // q{});
 }
+if ($^O eq 'MSWin32') {
+ my $libdir = 'C:\strawberry\c\x86_64-w64-mingw32\lib';
+ if (-d $libdir) {
+  $libs = "-L$libdir $libs";
+ }
+}
 
 my %WriteMakefileArgs = (
   "ABSTRACT" => "Read MaxMind DB files",
