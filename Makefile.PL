@@ -33,6 +33,13 @@ else {
  chomp($libs = `pkgconf --libs libmaxminddb` // '-lmaxminddb');
  chomp($version = `pkgconf --modversion libmaxminddb` // q{});
 }
+# Amend the library search path on old Windows Perl versions
+if ($^O eq 'MSWin32' && $^V < 5.034) {
+ my $libdir = 'C:\strawberry\c\x86_64-w64-mingw32\lib';
+ if (-d $libdir) {
+  $libs = "-L$libdir $libs";
+ }
+}
 
 my %WriteMakefileArgs = (
   "ABSTRACT" => "Read MaxMind DB files",
@@ -98,4 +105,21 @@ use Math::BigInt;
 if (!eval { Math::BigInt->from_bytes(pack 'C6', 0xff, 0xff, 0xb0, 0x09, 0x00, 0x00)->as_hex eq '0xffffb0090000' }) {
   warn "Error: Math::BigInt is too old or broken.\n";
   die "OS unsupported\n";
+}
+# Ignore not needed libraries on old Windows Perl versions
+package MY;
+sub const_loadlibs {
+ my $text = shift->SUPER::const_loadlibs(@_);
+ if ($^O eq 'MSWin32' && $^V < 5.034) {
+  my $filter = sub {
+   my $list = shift;
+   my $pattern = $list =~ m{"} ? qr{(?<=")\h+(?=")} : qr{\h+};
+   join q{ }, grep { m{ maxminddb | ws2_32 }x } split $pattern, $list;
+  };
+  $text =~ s{
+   ^ ( (?: EXTRA | LDLOAD ) LIBS ) \h* = \h* (.*?) \h* $
+  }
+  {sprintf '%s = %s', $1, $filter->($2)}egxm;
+ }
+ return $text;
 }
