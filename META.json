@@ -38,7 +38,7 @@
          "requires" : {
             "Math::BigInt" : "1.999806",
             "XSLoader" : "0",
-            "perl" : "5.016",
+            "perl" : "5.014",
             "utf8" : "0",
             "warnings" : "0"
          }

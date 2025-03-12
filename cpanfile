@@ -3,7 +3,7 @@
 
 requires "Math::BigInt" => "1.999806";
 requires "XSLoader" => "0";
-requires "perl" => "5.016";
+requires "perl" => "5.014";
 requires "utf8" => "0";
 requires "warnings" => "0";
 

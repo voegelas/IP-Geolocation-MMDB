@@ -5,7 +5,7 @@
 use strict;
 use warnings;
 
-use 5.016;
+use 5.014;
 use ExtUtils::MakeMaker;
 
 use Config;
@@ -51,7 +51,7 @@ my %WriteMakefileArgs = (
   },
   "DISTNAME" => "IP-Geolocation-MMDB",
   "LICENSE" => "perl",
-  "MIN_PERL_VERSION" => "5.016",
+  "MIN_PERL_VERSION" => "5.014",
   "NAME" => "IP::Geolocation::MMDB",
   "PREREQ_PM" => {
     "Math::BigInt" => "1.999806",

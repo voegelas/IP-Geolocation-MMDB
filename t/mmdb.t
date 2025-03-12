@@ -2,7 +2,7 @@
 
 # SPDX-License-Identifier: Artistic-1.0-Perl OR GPL-1.0-or-later
 
-use 5.016;
+use 5.014;
 use warnings;
 use utf8;
 
