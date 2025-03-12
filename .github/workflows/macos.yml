@@ -11,13 +11,9 @@ on:
 
 jobs:
   perl:
-
     runs-on: macos-latest
-
     steps:
       - uses: actions/checkout@v4
-      - name: perl -V
-        run: perl -V
       - name: Install dependencies
         run: |
           brew install libmaxminddb
