@@ -18,6 +18,8 @@ jobs:
         exclude:
           - distribution: strawberry
             perl: "5.34"
+          - distribution: strawberry
+            perl: "5.14"
       fail-fast: false
     env:
       MAKECMD: ${{ (matrix.distribution == 'strawberry' && matrix.perl < 5.26 && 'dmake') || 'gmake' }}
