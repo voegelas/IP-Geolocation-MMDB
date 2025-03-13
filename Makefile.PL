@@ -10,6 +10,7 @@ use ExtUtils::MakeMaker;
 
 use Config;
 use File::Spec::Functions qw(devnull);
+use Math::BigInt;
 my @defines;
 my $byteorder = $Config{byteorder};
 if (!defined $byteorder) {
@@ -23,7 +24,9 @@ elsif (!($byteorder == 1234 || $byteorder == 12345678)) {
  warn "Unknown byte order: $byteorder\n";
  die "OS unsupported\n";
 }
-my ($ccflags, $libs, $version);
+my $ccflags = '';
+my $libs = '';
+my $version;
 if (eval { require Alien::libmaxminddb }) {
  $ccflags = Alien::libmaxminddb->cflags;
  $libs = Alien::libmaxminddb->libs;
@@ -45,14 +48,6 @@ else {
   }
  }
 }
-if (!defined $version) {
-  warn "Error: libmaxminddb not found\n";
-  die "OS unsupported\n";
-}
-if ($version =~ m{^(0|1\.[01])\.}) {
-  warn "Error: libmaxminddb $version is too old\n";
-  die "OS unsupported\n";
-}
 # Amend the library search path on old Windows Perl versions
 if ($^O eq 'MSWin32' && $^V < 5.034) {
  my $libdir = 'C:\strawberry\c\x86_64-w64-mingw32\lib';
@@ -64,6 +59,10 @@ if ($^O eq 'MSWin32' && $^V < 5.034) {
 my %WriteMakefileArgs = (
   "ABSTRACT" => "Read MaxMind DB files",
   "AUTHOR" => "Andreas V\x{f6}gele <voegelas\@cpan.org>",
+  "BUILD_REQUIRES" => {
+    "Alien::libmaxminddb" => 0,
+    "Math::BigInt" => "1.999806"
+  },
   "CONFIGURE_REQUIRES" => {
     "Alien::libmaxminddb" => 0,
     "ExtUtils::MakeMaker" => 0,
@@ -97,6 +96,7 @@ my %WriteMakefileArgs = (
 );
 
 my %FallbackPrereqs = (
+  "Alien::libmaxminddb" => 0,
   "File::Spec::Functions" => 0,
   "Math::BigInt" => "1.999806",
   "Test::More" => 0,
@@ -116,14 +116,41 @@ delete $WriteMakefileArgs{CONFIGURE_REQUIRES}
 
 WriteMakefile(%WriteMakefileArgs);
 
-# Some Math::BigInt versions fail on i386 if Perl is built with -Dusequadmath.
-use Math::BigInt;
-if (!eval { Math::BigInt->from_bytes(pack 'C6', 0xff, 0xff, 0xb0, 0x09, 0x00, 0x00)->as_hex eq '0xffffb0090000' }) {
-  warn "Error: Math::BigInt is too old or broken\n";
-  die "OS unsupported\n";
+package MY;
+# Bail out if something is wrong
+sub post_initialize {
+ my $text = '';
+ if (!defined $version) {
+  $text = <<'TEXT';
+.PHONY: die
+die :
+	$(NOECHO) $(ECHO) "Error: libmaxminddb not found"
+	$(NOECHO) $(ECHO) "OS unsupported"
+	$(FALSE)
+TEXT
+ }
+ elsif ($version =~ m{^(0|1\.[01])\.}) {
+  $text = <<'TEXT';
+.PHONY: die
+die :
+	$(NOECHO) $(ECHO) "Error: libmaxminddb is too old"
+	$(NOECHO) $(ECHO) "OS unsupported"
+	$(FALSE)
+TEXT
+ }
+ elsif (!eval { Math::BigInt->from_bytes(pack 'C6', 0xff, 0xff, 0xb0, 0x09, 0x00, 0x00)->as_hex eq '0xffffb0090000' }) {
+  # Some Math::BigInt versions fail on i386 if Perl is built with -Dusequadmath.
+  $text = <<'TEXT';
+.PHONY: die
+die :
+	$(NOECHO) $(ECHO) "Error: Math::BigInt is too old or broken"
+	$(NOECHO) $(ECHO) "OS unsupported"
+	$(FALSE)
+TEXT
+ }
+ return $text;
 }
 # Ignore unneeded libraries on old Windows Perl versions
-package MY;
 sub const_loadlibs {
  my $text = shift->SUPER::const_loadlibs(@_);
  if ($^O eq 'MSWin32' && $^V < 5.034) {

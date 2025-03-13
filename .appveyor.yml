@@ -6,7 +6,6 @@ install:
   - set PATH=C:\strawberry\c\bin;C:\strawberry\perl\site\bin;C:\strawberry\perl\bin;%PATH%
   - perl -V
   - cd %APPVEYOR_BUILD_FOLDER%
-  - cpanm --quiet --notest Alien::MSYS
   - cpanm --quiet --notest --installdeps .
 
 build_script:

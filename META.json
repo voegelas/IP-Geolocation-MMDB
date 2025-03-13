@@ -14,6 +14,12 @@
    },
    "name" : "IP-Geolocation-MMDB",
    "prereqs" : {
+      "build" : {
+         "requires" : {
+            "Alien::libmaxminddb" : "0",
+            "Math::BigInt" : "1.999806"
+         }
+      },
       "configure" : {
          "requires" : {
             "Alien::libmaxminddb" : "0",

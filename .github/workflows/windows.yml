@@ -34,8 +34,7 @@ jobs:
           enable-modules-cache: false
       - name: Install dependencies
         run: |
-          cpanm https://github.com/voegelas/Alien-libmaxminddb/archive/refs/heads/main.tar.gz
-          cpanm --quiet --notest --installdeps .
+          cpanm --verbose --installdeps .
       - name: Build module
         run: |
           perl Makefile.PL

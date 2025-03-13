@@ -7,6 +7,11 @@ requires "perl" => "5.014";
 requires "utf8" => "0";
 requires "warnings" => "0";
 
+on 'build' => sub {
+  requires "Alien::libmaxminddb" => "0";
+  requires "Math::BigInt" => "1.999806";
+};
+
 on 'test' => sub {
   requires "File::Spec::Functions" => "0";
   requires "Test::More" => "0";
