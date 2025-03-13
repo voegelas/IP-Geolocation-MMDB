@@ -225,6 +225,9 @@ L<MaxMind|https://www.maxmind.com/> or L<DP-IP.com|https://db-ip.com/>.
 Alien::libmaxminddb from CPAN is a build dependency.  The built module does
 only depend on modules that are distributed with Perl.
 
+Install C<pkg-config> and C<libmaxminddb-devel> or C<libmaxminddb-dev> if you
+would like to use your operating system's libmaxminddb library.
+
 =head1 INCOMPATIBILITIES
 
 None.

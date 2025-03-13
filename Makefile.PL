@@ -9,10 +9,11 @@ use 5.014;
 use ExtUtils::MakeMaker;
 
 use Config;
+use File::Spec::Functions qw(devnull);
 my @defines;
 my $byteorder = $Config{byteorder};
 if (!defined $byteorder) {
- warn "\$Config{byteorder} is undefined.\n";
+ warn "\$Config{byteorder} is undefined";
  die "OS unsupported\n";
 }
 if ($byteorder == 4321 || $byteorder == 87654321) {
@@ -29,9 +30,28 @@ if (eval { require Alien::libmaxminddb }) {
  $version = Alien::libmaxminddb->version;
 }
 else {
- chomp($ccflags = `pkgconf --cflags libmaxminddb` // q{});
- chomp($libs = `pkgconf --libs libmaxminddb` // '-lmaxminddb');
- chomp($version = `pkgconf --modversion libmaxminddb` // q{});
+ my $devnull = devnull();
+ for my $pkgconf (qw(pkgconf pkg-config)) {
+  my $output = `$pkgconf --version 2>$devnull`;
+  if ($? == 0) {
+   $ccflags = `$pkgconf --cflags libmaxminddb 2>$devnull`;
+   last if $? != 0;
+   $libs = `$pkgconf --libs libmaxminddb 2>$devnull`;
+   last if $? != 0;
+   $version = `$pkgconf --modversion libmaxminddb 2>$devnull`;
+   last if $? != 0;
+   chomp($ccflags, $libs, $version);
+   last;
+  }
+ }
+}
+if (!defined $version) {
+  warn "Error: libmaxminddb not found\n";
+  die "OS unsupported\n";
+}
+if ($version =~ m{^(0|1\.[01])\.}) {
+  warn "Error: libmaxminddb $version is too old\n";
+  die "OS unsupported\n";
 }
 # Amend the library search path on old Windows Perl versions
 if ($^O eq 'MSWin32' && $^V < 5.034) {
@@ -96,17 +116,13 @@ delete $WriteMakefileArgs{CONFIGURE_REQUIRES}
 
 WriteMakefile(%WriteMakefileArgs);
 
-if (defined $version && $version =~ m{^(0|1\.[01])\.}) {
-  warn "Error: libmaxminddb $version is too old.\n";
-  die "OS unsupported\n";
-}
 # Some Math::BigInt versions fail on i386 if Perl is built with -Dusequadmath.
 use Math::BigInt;
 if (!eval { Math::BigInt->from_bytes(pack 'C6', 0xff, 0xff, 0xb0, 0x09, 0x00, 0x00)->as_hex eq '0xffffb0090000' }) {
-  warn "Error: Math::BigInt is too old or broken.\n";
+  warn "Error: Math::BigInt is too old or broken\n";
   die "OS unsupported\n";
 }
-# Ignore not needed libraries on old Windows Perl versions
+# Ignore unneeded libraries on old Windows Perl versions
 package MY;
 sub const_loadlibs {
  my $text = shift->SUPER::const_loadlibs(@_);
