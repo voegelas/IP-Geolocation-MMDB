@@ -48,8 +48,8 @@ else {
   }
  }
 }
-# Amend the library search path on old Windows Perl versions
 if ($^O eq 'MSWin32' && $^V < 5.034) {
+ # Amend the library search path
  my $libdir = 'C:\strawberry\c\x86_64-w64-mingw32\lib';
  if (-d $libdir) {
   $libs = "-L$libdir $libs";
@@ -150,10 +150,10 @@ TEXT
  }
  return $text;
 }
-# Ignore unneeded libraries on old Windows Perl versions
 sub const_loadlibs {
  my $text = shift->SUPER::const_loadlibs(@_);
  if ($^O eq 'MSWin32' && $^V < 5.034) {
+  # Ignore unneeded libraries, which may contain invalid symbols
   my $filter = sub {
    my $list = shift;
    my $pattern = $list =~ m{"} ? qr{(?<=")\h+(?=")} : qr{\h+};
@@ -164,5 +164,15 @@ sub const_loadlibs {
   }
   {sprintf '%s = %s', $1, $filter->($2)}egxm;
  }
+ return $text;
+}
+sub const_config {
+ my $text = shift->SUPER::const_config(@_);
+ # Some BSDs prepend -L/usr/local/lib, which may contain an old library
+ # version, to the library search path
+ $text =~ s{
+  ^ ( LD(?:DL)?FLAGS \h* = .*? ) -L/usr/local/lib ( $ | \h+ (.*) $ )
+ }
+ {$1$2}gxm;
  return $text;
 }
