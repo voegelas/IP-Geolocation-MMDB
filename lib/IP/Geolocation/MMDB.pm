@@ -149,6 +149,19 @@ object, a network prefix length and the data associated with the network.
 The node callback is called with the node's number in the tree and the
 children's node numbers.
 
+The following function shows a way to convert numeric IP addresses into
+strings:
+
+  use Socket qw(AF_INET6 inet_ntop);
+
+  sub address_from_bigint {
+    my $numeric_ip = shift;
+
+    state @padding = map { "\0" x (16 - $_) } 0 .. 16;
+    my $bytes = $numeric_ip->to_bytes;
+    return inet_ntop(AF_INET6, $padding[length $bytes] . $bytes);
+  }
+
 =head2 metadata
 
   my $metadata = $db->metadata;
