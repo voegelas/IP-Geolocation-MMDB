@@ -25,13 +25,15 @@ jobs:
       MAKECMD: ${{ (matrix.distribution == 'strawberry' && matrix.perl < 5.26 && 'dmake') || 'gmake' }}
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Set up Perl
         uses: shogo82148/actions-setup-perl@v1
         with:
           perl-version: ${{ matrix.perl }}
           distribution: ${{ matrix.distribution }}
           enable-modules-cache: false
+      - name: perl -V
+        run: perl -V
       - name: Install dependencies
         run: |
           cpanm --verbose --installdeps .
