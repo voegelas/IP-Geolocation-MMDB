@@ -14,8 +14,9 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: voegelas/debian-devel
+      options: --user root
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Install dependencies
         run: |
           sudo apt-get install -y libmaxminddb-dev
