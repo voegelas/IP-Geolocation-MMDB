@@ -34,7 +34,7 @@ jobs:
         run: perl -V
       - name: Install dependencies
         run: |
-          cpanm --verbose --installdeps .
+          cpanm --quiet --notest --installdeps .
       - name: Build module
         run: |
           perl Makefile.PL
