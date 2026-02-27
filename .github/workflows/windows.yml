@@ -13,16 +13,14 @@ jobs:
   perl:
     strategy:
       matrix:
-        perl: ["5.40", "5.14"]
+        perl: ["5.42", "5.14"]
         distribution: ["default", "strawberry"]
         exclude:
-          - distribution: strawberry
-            perl: "5.34"
           - distribution: strawberry
             perl: "5.14"
       fail-fast: false
     env:
-      MAKECMD: ${{ (matrix.distribution == 'strawberry' && matrix.perl < 5.26 && 'dmake') || 'gmake' }}
+      MAKECMD: 'gmake'
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v5
