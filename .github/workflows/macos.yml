@@ -1,5 +1,7 @@
 ---
 name: macos
+permissions:
+  contents: read
 
 on:
   push:
@@ -15,7 +17,7 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: perl -V
         run: perl -V
       - name: Install dependencies
